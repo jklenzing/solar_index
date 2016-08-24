@@ -42,11 +42,8 @@ class index:
 		S = Dataset(file, 'r')
 		self.year = np.floor(S.variables['DATE'][0,:]/1000)
 		self.day  = np.mod(S.variables['DATE'][0,:],1000)
-		self.date = self.year + self.day/367.0
-#		self.date  = np.empty(len(year))
-#		arr = np.array([datetime.datetime(int(year[i]), 1, 1, 12, 0) + datetime.timedelta(days=int(day[i]-1)) for i in range(0,len(year))])
-#		for i in range():
-#			self.date[i] = 
+		self.fyear = self.year + self.day/367.0
+		self.dn  = np.array([datetime.datetime(int(self.year[i]), 1, 1, 12, 0) + datetime.timedelta(days=int(self.day[i]-1)) for i in range(0,len(self.year))])
 
 		self.cor_1au = fixnan(S.variables['COR_1AU'][0,:])
 		self.He2 = fixnan(S.variables['LINE_FLUX'][0,:,1])
