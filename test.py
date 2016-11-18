@@ -21,6 +21,6 @@ S.Rz = f(S.fyear)
 f = sint.interp1d(ofyear, oF107, kind='nearest', bounds_error=False, fill_value=np.nan)
 S.F107 = f(S.fyear)
 
-ind = np.where(~np.isnan(S.F107) & ~np.isnan(S.He2))[0]
+ind = np.where(~np.isnan(S.F107) & ~np.isnan(S.oxygen))[0]
 
-print 'He2 & F10.7 => %4.2f' % np.corrcoef(S.He2[ind],S.F107[ind])[0,1]
+print 'He2 & F10.7 => %4.2f' % np.corrcoef(S.oxygen[ind],S.F107[ind])[0,1]
