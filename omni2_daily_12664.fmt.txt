@@ -7,5 +7,6 @@
  3 Hour                          I3        
  4 R (Sunspot No.)               I4        
  5 f10.7_index                   F6.1      
+ 6 Lyman Alpha index
 
 This file was produced by SPDF OMNIWeb Plus service
