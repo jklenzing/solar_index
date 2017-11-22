@@ -1,1 +1,1 @@
-solar_indices
+pre-alpha version.  Use with extreme caution!
