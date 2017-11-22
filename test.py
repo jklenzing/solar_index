@@ -1,11 +1,11 @@
 import numpy as np
 import scipy.interpolate as sint
 import matplotlib.pyplot as plt
-import solarind
+from solar_index import SolarIndex
 import seaborn
 import datetime
 
-S = solarind.index()
+S = SolarIndex()
 
 omni = np.loadtxt('omni2_daily_12664.txt')
 # year, doy, hour, Rz, F10.7
@@ -26,11 +26,11 @@ S.F107 = f(S.fyear)
 
 ind = ~np.isnan(S.F107) & ~np.isnan(S.oxygen)
 
-print 'Oxygen Cross Section & F10.7 => %4.2f' % np.corrcoef(S.oxygen[ind],S.F107[ind])[0,1]
+print('Oxygen Cross Section & F10.7 => %4.2f' % np.corrcoef(S.oxygen[ind],S.F107[ind])[0,1])
 
 for year in range(2003,2017):
 	jnd = np.logical_and(ind, S.year==year)
-	print '%d => %4.2f' % (year, np.corrcoef(S.oxygen[jnd],S.F107[jnd])[0,1])
+	print('%d => %4.2f' % (year, np.corrcoef(S.oxygen[jnd],S.F107[jnd])[0,1]))
 
 jnd = np.logical_and(S.year<=2012,S.F107<200)
 p = np.polyfit(S.F107[np.logical_and(ind,jnd)],S.oxygen[np.logical_and(ind,jnd)]*1e24,2)
@@ -40,12 +40,30 @@ y = np.polyval(p,x)
 jnd = S.year<=2012
 fig = plt.figure(figsize=(6,8))
 plt.plot(S.F107[np.logical_and(ind,jnd)],S.oxygen[np.logical_and(ind,jnd)]*1e24,'.k')
-plt.hold(True)
 plt.plot(x,y,'r',linewidth=2)
 plt.xlabel('F10.7 (sfu)', fontsize=16)
 plt.ylabel('Oxygen Power (yW)', fontsize=16)
 plt.title('2002 - 2012')
 plt.savefig('Solar Indices.png')
+plt.close('all')
+
+jnd = np.logical_and(S.year<=2012,S.F107<200)
+p = np.polyfit(S.F107[np.logical_and(ind,jnd)],S.He2[np.logical_and(ind,jnd)]*1e6,2)
+x = range(70,201)
+y = np.polyval(p,x)
+
+jnd = S.year<=2012
+fig = plt.figure(figsize=(6,8))
+ax = fig.add_subplot(1,1,1)
+plt.plot(S.F107[np.logical_and(ind,jnd)],S.He2[np.logical_and(ind,jnd)]*1e6,'.k')
+plt.plot(x,y,'r',linewidth=2)
+plt.xlabel('F10.7 (sfu)', fontsize=16)
+ax.tick_params(axis='both', which='major', labelsize=14)
+plt.xlim([50,250])
+plt.ylim([200,500])
+plt.ylabel('30.4 nm radiation flux ($\mu$W/m$^2$/nm)', fontsize=16)
+plt.title('TIMED/SEE data (2002-2012)',fontsize=20)
+plt.savefig('He2.png')
 plt.close('all')
 
 
@@ -57,7 +75,7 @@ plt.close('all')
 #line1 = ax1.plot(S.dn,S.oxygen*1e24,'-r')
 #plt.ylim(np.polyval(p,[50,250]))
 #plt.ylabel('Oxygen Power (yW)', fontsize=16, color='r')
- 
+
 #ax2 = fig.add_subplot(111, sharex=ax1, frameon=False)
 #line2 = ax2.plot(S.dn,S.F107,'--k')
 #ax2.yaxis.tick_right()
@@ -83,7 +101,6 @@ for year in range(yrange[0],yrange[1]):
 	f0   = np.mean(S.F107[np.logical_and(ind,jnd)])
 	fsig = np.std(S.F107[np.logical_and(ind,jnd)])
 	q = plt.plot(S.dn[jnd],(S.oxygen[jnd]-q0)/qsig,'r',label = '<O$_{pow}$>')
-	plt.hold(True)
 	f = plt.plot(S.dn[jnd],(S.F107[jnd]-f0)/fsig,'k',label = 'F10.7')
 	plt.xlim([datetime.datetime(year,1,1),datetime.datetime(year+1,1,1)])
 	if i==1:
@@ -107,7 +124,6 @@ for year in range(yrange[0],yrange[1]):
 	f0   = np.mean(S.F107[np.logical_and(ind,jnd)])
 	fsig = np.std(S.F107[np.logical_and(ind,jnd)])
 	q = plt.plot(S.dn[jnd],(S.oxygen[jnd]-q0)/qsig,'r',label = '<O$_{pow}$>')
-	plt.hold(True)
 	f = plt.plot(S.dn[jnd],(S.F107[jnd]-f0)/fsig,'k',label = 'F10.7')
 	plt.xlim([datetime.datetime(year,1,1),datetime.datetime(year+1,1,1)])
 	if i==1:
