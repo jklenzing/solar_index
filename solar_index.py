@@ -30,8 +30,6 @@ class SolarIndex:
 	----------
 	file : (string)
 		name of data file to input (default='latest_see_L3_merged.ncdf')
-	getall : (boolean)
-		????
 
 	Returns
 	-------
@@ -75,17 +73,8 @@ class SolarIndex:
 	fix_nan(x)
 		Replaces missing values (-1) with nan
 	"""
-	def __init__(self, file="latest_see_L3_merged.ncdf", getall=False):
-		'''
-		Creates index of TIMED/SEE EUV spectra
-
-		Input:
-		file	        = name of data file
-		getall	        = flag to automatically load
-
-		properties:
-		'''
-
+	def __init__(self, file="latest_see_L3_merged.ncdf"):
+		
 		from netCDF4 import Dataset
 
 
