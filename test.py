@@ -44,7 +44,7 @@ plt.plot(x,y,'r',linewidth=2)
 plt.xlabel('F10.7 (sfu)', fontsize=16)
 plt.ylabel('Oxygen Power (yW)', fontsize=16)
 plt.title('2002 - 2012')
-plt.savefig('Solar Indices.png')
+plt.savefig('tests/Solar Indices.png')
 plt.close('all')
 
 jnd = np.logical_and(S.year<=2012,S.F107<200)
@@ -63,7 +63,7 @@ plt.xlim([50,250])
 plt.ylim([200,500])
 plt.ylabel('30.4 nm radiation flux ($\mu$W/m$^2$/nm)', fontsize=16)
 plt.title('TIMED/SEE data (2002-2012)',fontsize=20)
-plt.savefig('He2.png')
+plt.savefig('tests/He2.png')
 plt.close('all')
 
 
@@ -84,7 +84,7 @@ plt.close('all')
 #plt.ylim([50,250])
 
 
-#plt.savefig('time.png')
+#plt.savefig('tests/time.png')
 #plt.close('all')
 
 fig = plt.figure(figsize=(16,16))
@@ -107,7 +107,7 @@ for year in range(yrange[0],yrange[1]):
 		plt.legend(loc="upper left")
 
 plt.suptitle('Comparison of Solar Indices - Average Oxygen Power vs F10.7',fontsize=16)
-plt.savefig('2002-2008.png')
+plt.savefig('tests/2002-2008.png')
 plt.close('all')
 
 fig = plt.figure(figsize=(16,16))
@@ -130,5 +130,5 @@ for year in range(yrange[0],yrange[1]):
 		plt.legend(loc="upper left")
 
 plt.suptitle('Comparison of Solar Indices - Average Oxygen Power vs F10.7',fontsize=16)
-plt.savefig('2009-2016.png')
+plt.savefig('tests/2009-2016.png')
 plt.close('all')
