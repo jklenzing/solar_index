@@ -99,7 +99,22 @@ class SolarIndex:
 		self.line_wave = _fix_nan(S.variables['LINEWAVE'][0,:])
 		self.line_flux = _fix_nan(S.variables['LINE_FLUX'][0,:,:])
 
-	def _integrate_power(self,species='o'):
+	def _integrate_power(self,species):
+		""" Integrates EUV spectra times photoionization cross-section
+
+		Parameters
+		----------
+		species : (string)
+			Specifies which species to integrate for.
+			Currently supports 'o', 'n2', 'o2'
+
+		Returns
+		-------
+		self.power : (dict)
+			Dictionary containing the average power delivered to a given ion as
+			a timeseries.
+
+		"""
 
 		self.power[species] = np.zeros(len(self.year))
 
@@ -170,7 +185,7 @@ def load_coeff(species='o'):
 	bins = np.array(
 		[[   5.   ,   10.   ,   15.   ,   20.   ,   25.33 ,   28.115,
 			25.   ,   29.831,   30.332,   30.   ,   36.507,   35.   ,
-				40.   ,   46.222,   45.   ,   50.   ,   55.131,   58.133,
+			40.   ,   46.222,   45.   ,   50.   ,   55.131,   58.133,
 			55.   ,   60.676,   62.673,   60.   ,   65.   ,   70.036,
 			70.   ,   76.215,   76.741,   78.636,   75.   ,   80.   ,
 			85.   ,   90.   ,   97.402,   95.   ,  102.272,  102.891,
@@ -178,11 +193,11 @@ def load_coeff(species='o'):
 
 		 [  10.   ,   15.   ,   20.   ,   25.   ,   25.93 ,   28.715,
 		 	30.   ,   30.377,   30.678,   35.   ,   37.107,   40.   ,
-				45.   ,   46.822,   50.   ,   55.   ,   55.731,   58.733,
+			45.   ,   46.822,   50.   ,   55.   ,   55.731,   58.733,
 			60.   ,   61.276,   63.273,   65.   ,   70.   ,   70.636,
-				75.   ,   76.815,   77.341,   79.236,   80.   ,   85.   ,
+			75.   ,   76.815,   77.341,   79.236,   80.   ,   85.   ,
 			90.   ,   95.   ,   98.002,  100.   ,  102.872,  103.491,
-			   105.]]
+		   105.]]
 		   )
 
 	if species == 'o':
