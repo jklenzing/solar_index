@@ -76,7 +76,10 @@ class SolarIndex:
 	def __init__(self):
 
 		self._load_file()
-		self._integrate_power()
+		self.power = dict()
+		self._integrate_power(species='o')
+		self._integrate_power(species='n2')
+		self._integrate_power(species='o2')
 
 	def _load_file(self, file="latest_see_L3_merged.ncdf"):
 
@@ -96,23 +99,14 @@ class SolarIndex:
 		self.line_wave = _fix_nan(S.variables['LINEWAVE'][0,:])
 		self.line_flux = _fix_nan(S.variables['LINE_FLUX'][0,:,:])
 
-	def _integrate_power(self):
+	def _integrate_power(self,species='o'):
 
-		self.oxygen = np.zeros(len(self.year))
-		self.n2     = np.zeros(len(self.year))
-		self.o2     = np.zeros(len(self.year))
+		self.power[species] = np.zeros(len(self.year))
 
-		bins, area = load_coeff(species='o')
+		bins, area = load_coeff(species=species)
 		for i in range(0,len(area)):
-			self.oxygen = self.oxygen + integrate_bin(bins[:,i],self.sp_wave,self.sp_flux,area[i])
+			self.power[species] = self.power[species] + integrate_bin(bins[:,i],self.sp_wave,self.sp_flux,area[i])
 
-		bins, area = load_coeff(species='n2')
-		for i in range(0,len(area)):
-			self.n2 = self.n2 + integrate_bin(bins[:,i],self.sp_wave,self.sp_flux,area[i])
-
-		bins, area = load_coeff(species='o2')
-		for i in range(0,len(area)):
-			self.o2 = self.o2 + integrate_bin(bins[:,i],self.sp_wave,self.sp_flux,area[i])
 
 def integrate_bin(b,x,y,s):
 	""" Integrates sp_flux over bin values
