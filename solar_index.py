@@ -70,13 +70,17 @@ class SolarIndex:
 	integrate_bin(b,x,y,s)
 		Integrates sp_flux over bin values
 
-	fix_nan(x)
+	_fix_nan(x)
 		Replaces missing values (-1) with nan
 	"""
-	def __init__(self, file="latest_see_L3_merged.ncdf"):
-		
-		from netCDF4 import Dataset
+	def __init__(self):
 
+		self._load_file()
+		self._integrate_power()
+
+	def _load_file(self, file="latest_see_L3_merged.ncdf"):
+
+		from netCDF4 import Dataset
 
 		S = Dataset(file, 'r')
 		self.year  = np.floor(S.variables['DATE'][0,:]/1000)
@@ -84,13 +88,15 @@ class SolarIndex:
 		self.fyear = self.year + self.day/367.0
 		self.dn    = np.array([datetime.datetime(int(self.year[i]), 1, 1, 12, 0) + datetime.timedelta(days=int(self.day[i]-1)) for i in range(0,len(self.year))])
 
-		self.cor_1au   = fix_nan(S.variables['COR_1AU'][0,:])
-		self.He2       = fix_nan(S.variables['LINE_FLUX'][0,:,1])
+		self.cor_1au   = _fix_nan(S.variables['COR_1AU'][0,:])
+		self.He2       = _fix_nan(S.variables['LINE_FLUX'][0,:,1])
 
-		self.sp_wave   = fix_nan(S.variables['SP_WAVE'][0,:])
-		self.sp_flux   = fix_nan(S.variables['SP_FLUX'][0,:,:])
-		self.line_wave = fix_nan(S.variables['LINEWAVE'][0,:])
-		self.line_flux = fix_nan(S.variables['LINE_FLUX'][0,:,:])
+		self.sp_wave   = _fix_nan(S.variables['SP_WAVE'][0,:])
+		self.sp_flux   = _fix_nan(S.variables['SP_FLUX'][0,:,:])
+		self.line_wave = _fix_nan(S.variables['LINEWAVE'][0,:])
+		self.line_flux = _fix_nan(S.variables['LINE_FLUX'][0,:,:])
+
+	def _integrate_power(self):
 
 		self.oxygen = np.zeros(len(self.year))
 		self.n2     = np.zeros(len(self.year))
@@ -132,7 +138,7 @@ def integrate_bin(b,x,y,s):
 	iflux = s*np.sum(y[:,ind],axis=1)*d_lambda
 	return(iflux)
 
-def fix_nan(x):
+def _fix_nan(x):
 	""" Replaces missing values (-1) with nan
 
 	Parameters
