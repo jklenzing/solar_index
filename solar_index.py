@@ -67,7 +67,7 @@ class SolarIndex:
 
 	Methods
 	-------
-	integrate_bin(b,x,y,s)
+	_integrate_bin(b,x,y,s)
 		Integrates sp_flux over bin values
 
 	_fix_nan(x)
@@ -120,10 +120,10 @@ class SolarIndex:
 
 		bins, area = load_coeff(species=species)
 		for i in range(0,len(area)):
-			self.power[species] = self.power[species] + integrate_bin(bins[:,i],self.sp_wave,self.sp_flux,area[i])
+			self.power[species] = self.power[species] + _integrate_bin(bins[:,i],self.sp_wave,self.sp_flux,area[i])
 
 
-def integrate_bin(b,x,y,s):
+def _integrate_bin(b,x,y,s):
 	""" Integrates sp_flux over bin values
 
 	Parameters
