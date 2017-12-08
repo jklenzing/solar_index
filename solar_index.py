@@ -77,9 +77,9 @@ class SolarIndex:
 
 		self._load_file()
 		self.power = dict()
-		self._integrate_power(species='o')
-		self._integrate_power(species='n2')
-		self._integrate_power(species='o2')
+		self.integrate_power(species='o')
+		self.integrate_power(species='n2')
+		self.integrate_power(species='o2')
 
 	def _load_file(self, file="data/latest_see_L3_merged.ncdf"):
 
@@ -99,7 +99,7 @@ class SolarIndex:
 		self.line_wave = _fix_nan(S.variables['LINEWAVE'][0,:])
 		self.line_flux = _fix_nan(S.variables['LINE_FLUX'][0,:,:])
 
-	def _integrate_power(self,species):
+	def integrate_power(self,species):
 		""" Integrates EUV spectra times photoionization cross-section
 
 		Parameters
