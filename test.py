@@ -7,7 +7,7 @@ import datetime
 
 S = SolarIndex()
 
-omni = np.loadtxt('omni2_daily_12664.txt')
+omni = np.loadtxt('data/omni2_daily_12664.txt')
 # year, doy, hour, Rz, F10.7
 
 # Interpolate Rz and F107 to EUV measurments

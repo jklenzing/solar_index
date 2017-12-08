@@ -29,7 +29,7 @@ class SolarIndex:
 	Parameters
 	----------
 	file : (string)
-		name of data file to input (default='latest_see_L3_merged.ncdf')
+		name of data file to input (default='data/latest_see_L3_merged.ncdf')
 
 	Returns
 	-------
@@ -81,7 +81,7 @@ class SolarIndex:
 		self._integrate_power(species='n2')
 		self._integrate_power(species='o2')
 
-	def _load_file(self, file="latest_see_L3_merged.ncdf"):
+	def _load_file(self, file="data/latest_see_L3_merged.ncdf"):
 
 		from netCDF4 import Dataset
 
