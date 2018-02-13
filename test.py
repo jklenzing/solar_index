@@ -29,17 +29,17 @@ ind = ~np.isnan(S.F107) & ~np.isnan(S.power['o'])
 print('Oxygen Cross Section & F10.7 => %4.2f' % np.corrcoef(S.power['o'][ind],S.F107[ind])[0,1])
 
 for year in range(2003,2017):
-	jnd = np.logical_and(ind, S.year==year)
+	jnd = (ind)&(S.year==year)
 	print('%d => %4.2f' % (year, np.corrcoef(S.power['o'][jnd],S.F107[jnd])[0,1]))
 
-jnd = np.logical_and(S.year<=2012,S.F107<200)
-p = np.polyfit(S.F107[np.logical_and(ind,jnd)],S.power['o'][np.logical_and(ind,jnd)]*1e24,2)
+jnd = (S.year<=2012)&(S.F107<200)
+p = np.polyfit(S.F107[(ind)&(jnd)],S.power['o'][(ind)&(jnd)]*1e24,2)
 x = range(70,201)
 y = np.polyval(p,x)
 
 jnd = S.year<=2012
 fig = plt.figure(figsize=(6,8))
-plt.plot(S.F107[np.logical_and(ind,jnd)],S.power['o'][np.logical_and(ind,jnd)]*1e24,'.k')
+plt.plot(S.F107[(ind)&(jnd)],S.power['o'][(ind)&(jnd)]*1e24,'.k')
 plt.plot(x,y,'r',linewidth=2)
 plt.xlabel('F10.7 (sfu)', fontsize=16)
 plt.ylabel('Oxygen Power (yW)', fontsize=16)
@@ -47,15 +47,15 @@ plt.title('2002 - 2012')
 plt.savefig('tests/Solar Indices.png')
 plt.close('all')
 
-jnd = np.logical_and(S.year<=2012,S.F107<200)
-p = np.polyfit(S.F107[np.logical_and(ind,jnd)],S.He2[np.logical_and(ind,jnd)]*1e6,2)
+jnd = (S.year<=2012)&(S.F107<200)
+p = np.polyfit(S.F107[(ind)&(jnd)],S.He2[(ind)&(jnd)]*1e6,2)
 x = range(70,201)
 y = np.polyval(p,x)
 
 jnd = S.year<=2012
 fig = plt.figure(figsize=(6,8))
 ax = fig.add_subplot(1,1,1)
-plt.plot(S.F107[np.logical_and(ind,jnd)],S.He2[np.logical_and(ind,jnd)]*1e6,'.k')
+plt.plot(S.F107[(ind)&(jnd)],S.He2[(ind)&(jnd)]*1e6,'.k')
 plt.plot(x,y,'r',linewidth=2)
 plt.xlabel('F10.7 (sfu)', fontsize=16)
 ax.tick_params(axis='both', which='major', labelsize=14)
@@ -96,10 +96,10 @@ for year in range(yrange[0],yrange[1]):
 	i = i+1
 	fig.add_subplot(np.diff(yrange),1,i)
 	jnd  = S.year==year
-	q0   = np.mean(S.power['o'][np.logical_and(ind,jnd)])
-	qsig = np.std(S.power['o'][np.logical_and(ind,jnd)])
-	f0   = np.mean(S.F107[np.logical_and(ind,jnd)])
-	fsig = np.std(S.F107[np.logical_and(ind,jnd)])
+	q0   = np.mean(S.power['o'][(ind)&(jnd)])
+	qsig = np.std(S.power['o'][(ind)&(jnd)])
+	f0   = np.mean(S.F107[(ind)&(jnd)])
+	fsig = np.std(S.F107[(ind)&(jnd)])
 	q = plt.plot(S.dn[jnd],(S.power['o'][jnd]-q0)/qsig,'r',label = '<O$_{pow}$>')
 	f = plt.plot(S.dn[jnd],(S.F107[jnd]-f0)/fsig,'k',label = 'F10.7')
 	plt.xlim([datetime.datetime(year,1,1),datetime.datetime(year+1,1,1)])
@@ -119,10 +119,10 @@ for year in range(yrange[0],yrange[1]):
 	i = i+1
 	fig.add_subplot(np.diff(yrange),1,i)
 	jnd  = S.year==year
-	q0   = np.mean(S.power['o'][np.logical_and(ind,jnd)])
-	qsig = np.std(S.power['o'][np.logical_and(ind,jnd)])
-	f0   = np.mean(S.F107[np.logical_and(ind,jnd)])
-	fsig = np.std(S.F107[np.logical_and(ind,jnd)])
+	q0   = np.mean(S.power['o'][(ind)&(jnd)])
+	qsig = np.std(S.power['o'][(ind)&(jnd)])
+	f0   = np.mean(S.F107[(ind)&(jnd)])
+	fsig = np.std(S.F107[(ind)&(jnd)])
 	q = plt.plot(S.dn[jnd],(S.power['o'][jnd]-q0)/qsig,'r',label = '<O$_{pow}$>')
 	f = plt.plot(S.dn[jnd],(S.F107[jnd]-f0)/fsig,'k',label = 'F10.7')
 	plt.xlim([datetime.datetime(year,1,1),datetime.datetime(year+1,1,1)])
