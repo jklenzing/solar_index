@@ -16,7 +16,7 @@ Jeff Klenzing (JK), 22 Nov 2017, Goddard Space Flight Center (GSFC)
 References
 -------------------------------------------------------------------------------
 Richards, P.G., 1994
-Solomon
+Solomon et al, 2005
 """
 
 import datetime as dt
