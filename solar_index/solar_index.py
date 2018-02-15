@@ -157,7 +157,7 @@ class SolarIndex:
 	    a timeseries.
 	"""
         assert species in self.species, logging.error("unknown species")
-        
+
 	bins, area = self.load_coeff(species=species)
 
 	for i,aa in enumerate(area):
@@ -216,7 +216,7 @@ class SolarIndex:
 
 
     def load_coeff(species):
-        """ Generates bins of photoabsorption coefficients using method 
+        """ Generates bins of photoabsorption coefficients using method
         described by Solomon et al, 2005.
 
 	Parameters
@@ -232,7 +232,7 @@ class SolarIndex:
 	    The corresponding ionization cross-section (m^2)
 	"""
         assert species in self.species, logging.error("unknown species")
-        
+
 	bins = np.array([[0.05, 0.4, 0.8, 1.8, 3.2, 7.0, 15.5, 22.4, 29.0, 32.0,
 			  54.0, 65.0, 79.8, 91.3, 97.5, 98.7, 102.7],
 		         [0.4, 0.8, 1.8, 3.2, 7.0, 15.5, 22.4, 29.0, 32.0, 54.0,
@@ -248,7 +248,7 @@ class SolarIndex:
                              7.6283, 13.2125, 16.8233, 20.3066, 27.0314,
                              23.5669, 10.4980, 13.3950, 18.7145, 1.6320,
                              1.1500]) * 1.0e-22
-	elif species == 'o2':
+	elif species == 'n2':
 	    area = np.array([0.0025, 0.0201, 0.1409, 1.1370, 0.3459, 1.5273,
                              5.0859, 9.9375, 11.7383, 19.6514, 23.0931, 23.0346,
                              2.1434, 2.1775, 2.5465, 0.0000, 0.0000]) * 1.0e-22
