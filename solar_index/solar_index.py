@@ -44,10 +44,8 @@ class SolarIndex:
         Year of TIMED/SEE data
     day : (int)
         day of year for TIMED/SEE data
-    fyear : (float)
-        Fractional Years
-    dn : (float)
-
+    dn : (datetime)
+        datetime object
     cor_1au : (float)
         Correction factor to 1 AU
     He2 : (float)
