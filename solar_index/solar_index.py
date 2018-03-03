@@ -92,6 +92,7 @@ class SolarIndex:
         except:
             logging.error("unable to initiate SolarIndex class")
 
+
     def _load_file(self, file_dir="data",
                    file_name="latest_see_L3_merged.ncdf"):
         """ Load a netCDF4 file into the SolarIndex class
@@ -123,10 +124,7 @@ class SolarIndex:
 
         # Assign the time data
         self.year = np.floor(S.variables['DATE'][0,:] / 1000.0).astype(int)
-        #max_day = np.array([float(dt.datetime(yy, 12, 31).strftime("%j"))
-        #                    for yy in year])
         self.day = np.mod(S.variables['DATE'][0,:], 1000).astype(int)
-        #self.fyear = self.year + self.day / (max_day + 1.0)
         self.dt = np.array([dt.datetime(int(self.year[i]),1,1) +
                             dt.timedelta(days=int(self.day[i])-1)
                             for i in range(len(self.day))])
@@ -138,6 +136,7 @@ class SolarIndex:
         self.sp_flux = self._fix_nan(S.variables['SP_FLUX'][0,:,:])
         self.line_wave = self._fix_nan(S.variables['LINEWAVE'][0,:])
         self.line_flux = self._fix_nan(S.variables['LINE_FLUX'][0,:,:])
+
 
     def integrate_power(self, species):
         """ Integrates EUV spectra times photoionization cross-section
