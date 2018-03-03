@@ -118,24 +118,50 @@ class SolarIndex:
         assert path.isfile(self.filename), logging.error("unknown file")
 
         try:
-            S = Dataset(self.filename, 'r')
+            data = Dataset(self.filename, 'r')
         except:
             logging.error("unable to load netCDF4 file")
 
         # Assign the time data
-        self.year = np.floor(S.variables['DATE'][0,:] / 1000.0).astype(int)
-        self.day = np.mod(S.variables['DATE'][0,:], 1000).astype(int)
+        self.year = np.floor(data.variables['DATE'][0,:] / 1000.0).astype(int)
+        self.day = np.mod(data.variables['DATE'][0,:], 1000).astype(int)
         self.dt = np.array([dt.datetime(int(self.year[i]),1,1) +
                             dt.timedelta(days=int(self.day[i])-1)
                             for i in range(len(self.day))])
 
-        self.cor_1au = self._fix_nan(S.variables['COR_1AU'][0,:])
-        self.He2 = self._fix_nan(S.variables['LINE_FLUX'][0,:,1])
+        self.cor_1au = self._fix_nan(data.variables['COR_1AU'][0,:])
+        self.He2 = self._fix_nan(data.variables['LINE_FLUX'][0,:,1])
 
-        self.sp_wave = self._fix_nan(S.variables['SP_WAVE'][0,:])
-        self.sp_flux = self._fix_nan(S.variables['SP_FLUX'][0,:,:])
-        self.line_wave = self._fix_nan(S.variables['LINEWAVE'][0,:])
-        self.line_flux = self._fix_nan(S.variables['LINE_FLUX'][0,:,:])
+        self.sp_wave = self._fix_nan(data.variables['SP_WAVE'][0,:])
+        self.sp_flux = self._fix_nan(data.variables['SP_FLUX'][0,:,:])
+        self.line_wave = self._fix_nan(data.variables['LINEWAVE'][0,:])
+        self.line_flux = self._fix_nan(data.variables['LINE_FLUX'][0,:,:])
+
+
+    def _fix_nan(self, x, fill_value=-1.0, replace_value=np.nan):
+        """ Replaces missing values (-1) with nan
+
+        Parameters
+        ----------
+        x : (np.ndarray)
+            Array of values with some values possibly filled by a constant
+            fill_value : (float)
+                Value used to denote a lack of data (default=-1.0)
+            replace_value : (float)
+                New fill value (default=np.nan)
+
+        Returns
+        -------
+        x : (np.ndarray)
+                Array of values with old fill values replaced with new fill values
+        """
+
+        assert isinstance(x, np.ndarray), \
+                    logging.error("x must be a numpy array")
+
+        x[x==fill_value] = replace_value
+
+        return x
 
 
     def integrate_power(self, species):
@@ -163,7 +189,7 @@ class SolarIndex:
                                                        self.sp_flux, aa)
 
 
-    def _integrate_bin(b,x,y,s):
+    def _integrate_bin(self,b,x,y,s):
         """ Integrates sp_flux over bin values
 
         Parameters
@@ -188,33 +214,7 @@ class SolarIndex:
         return(iflux)
 
 
-    def _fix_nan(x, fill_value=-1.0, replace_value=np.nan):
-        """ Replaces missing values (-1) with nan
-
-        Parameters
-        ----------
-        x : (np.array)
-            Array of values with some values possibly filled by a constant
-            fill_value : (float)
-                Value used to denote a lack of data (default=-1)
-            replace_value : (float)
-                New fill value (default=np.nan)
-
-        Returns
-        -------
-        x : (np.ndarray)
-                Array of values with old fill values replaced with new fill values
-        """
-
-        assert isinstance(x, np.ndarray), \
-                logging.error("x must be a numpy array")
-
-        x[x==fill_value] = replace_value
-
-        return x
-
-
-    def load_coeff(species='o'):
+    def load_coeff(self,species='o'):
         """ Generates bins of photoabsorption coefficients using method
         described by Solomon et al, 2005.
 
