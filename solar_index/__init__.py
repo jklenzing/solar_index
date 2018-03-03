@@ -20,7 +20,6 @@ __version__ = str('0.1a1')
 #---------------------------------------------------------------------
 
 try:
-    import solar_index
-    from solar_index import (SolarIndex)
+    from solar_index.solar_index import SolarIndex
 except ImportError as e:
     logging.exception('problem importing solar_index: ' + str(e))
