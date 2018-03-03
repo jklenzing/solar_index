@@ -3,11 +3,11 @@
 # Copyright (C) 2017, JK & AGB
 # Full license can be found in License.md
 #-----------------------------------------------------------------------------
-""" Tools for calculating integrated solar indices.
+""" Tools for calculating integrated solar indices from EUV Spectra.
 
 Classes
 -------------------------------------------------------------------------------
-SolarIndex
+EUVspectra
 
 Moduleauthor
 -------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ import datetime as dt
 import numpy as np
 import logging
 
-class SolarIndex:
+class EUVspectra:
     """ Object containing TIMED/SEE EUV spectra and derived indices
 
     Parameters

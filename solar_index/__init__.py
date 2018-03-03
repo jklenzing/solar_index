@@ -14,12 +14,12 @@ SolarIndex    Solar Index data
 """
 import logging
 
-__version__ = str('0.1a1')
+__version__ = str('0.1a2')
 
 # Imports
 #---------------------------------------------------------------------
 
 try:
-    from solar_index.solar_index import SolarIndex
+    from solar_index import (EUVspectra, omni)
 except ImportError as e:
     logging.exception('problem importing solar_index: ' + str(e))

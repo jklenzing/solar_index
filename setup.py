@@ -15,7 +15,7 @@ def read(fname):
 # Run setup
 
 setup(name='solar_index',
-      version='0.1a1',
+      version='0.1a2',
       url='github.com/jklenzing/solar_index',
       author='Jeff Klenzing',
       author_email='jeffrey.klenzing@nasa.gov',
