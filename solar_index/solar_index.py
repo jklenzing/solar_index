@@ -72,7 +72,7 @@ class SolarIndex:
     _integrate_bin(b,x,y,s)
         Integrates sp_flux over bin values
 
-    _fix_nan(x)
+    _fill_nan(x)
         Replaces missing values (-1) with nan
     """
     def __init__(self, file_dir="data", file_name="latest_see_L3_merged.ncdf"):
@@ -129,16 +129,16 @@ class SolarIndex:
                             dt.timedelta(days=int(self.day[i])-1)
                             for i in range(len(self.day))])
 
-        self.cor_1au = self._fix_nan(data.variables['COR_1AU'][0,:])
-        self.He2 = self._fix_nan(data.variables['LINE_FLUX'][0,:,1])
+        self.cor_1au = self._fill_nan(data.variables['COR_1AU'][0,:])
+        self.He2 = self._fill_nan(data.variables['LINE_FLUX'][0,:,1])
 
-        self.sp_wave = self._fix_nan(data.variables['SP_WAVE'][0,:])
-        self.sp_flux = self._fix_nan(data.variables['SP_FLUX'][0,:,:])
-        self.line_wave = self._fix_nan(data.variables['LINEWAVE'][0,:])
-        self.line_flux = self._fix_nan(data.variables['LINE_FLUX'][0,:,:])
+        self.sp_wave = self._fill_nan(data.variables['SP_WAVE'][0,:])
+        self.sp_flux = self._fill_nan(data.variables['SP_FLUX'][0,:,:])
+        self.line_wave = self._fill_nan(data.variables['LINEWAVE'][0,:])
+        self.line_flux = self._fill_nan(data.variables['LINE_FLUX'][0,:,:])
 
 
-    def _fix_nan(self, x, fill_value=-1.0, replace_value=np.nan):
+    def _fill_nan(self, x, fill_value=-1.0, replace_value=np.nan):
         """ Replaces missing values (-1) with nan
 
         Parameters
