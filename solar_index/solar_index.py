@@ -44,7 +44,7 @@ class SolarIndex:
         Year of TIMED/SEE data
     day : (int)
         day of year for TIMED/SEE data
-    dn : (datetime)
+    dt : (datetime)
         datetime object
     cor_1au : (float)
         Correction factor to 1 AU
@@ -83,7 +83,7 @@ class SolarIndex:
 
             # Initiate species and power
             self.species = ['o', 'n2', 'o2']
-            self.power = {skey:np.zeroes(shape=self.year.shape)
+            self.power = {skey:np.zeros(shape=self.year.shape)
                           for skey in self.species}
 
             # Integrate power for each species
@@ -127,7 +127,7 @@ class SolarIndex:
         #                    for yy in year])
         self.day = np.mod(S.variables['DATE'][0,:], 1000).astype(int)
         #self.fyear = self.year + self.day / (max_day + 1.0)
-        self.dn =  np.array([dt.datetime(int(self.year[i]),1,1) +
+        self.dt = np.array([dt.datetime(int(self.year[i]),1,1) +
                             dt.timedelta(days=int(self.day[i])-1)
                             for i in range(len(self.day))])
 
@@ -188,7 +188,8 @@ class SolarIndex:
         iflux = s * np.sum(y[:,ind], axis=1) * d_lambda
         return(iflux)
 
-    def _fix_nan(x, fill_value=-1, replace_value=np.nan):
+
+    def _fix_nan(x, fill_value=-1.0, replace_value=np.nan):
         """ Replaces missing values (-1) with nan
 
         Parameters
@@ -202,9 +203,10 @@ class SolarIndex:
 
         Returns
         -------
-        x : (np.array)
+        x : (np.ndarray)
                 Array of values with old fill values replaced with new fill values
         """
+
         assert isinstance(x, np.ndarray), \
                 logging.error("x must be a numpy array")
 
@@ -213,7 +215,7 @@ class SolarIndex:
         return x
 
 
-    def load_coeff(species):
+    def load_coeff(species='o'):
         """ Generates bins of photoabsorption coefficients using method
         described by Solomon et al, 2005.
 
