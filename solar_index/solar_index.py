@@ -79,7 +79,7 @@ class SolarIndex:
 
         try:
             # Load EUV data
-            self._load_file(file_dir=file_dir, file_name=file_name)
+            self.load_euv_spectra(file_dir=file_dir, file_path=file_path)
 
             # Initiate species and power
             self.species = ['o', 'n2', 'o2']
@@ -93,8 +93,7 @@ class SolarIndex:
             logging.error("unable to initiate SolarIndex class")
 
 
-    def _load_file(self, file_dir="data",
-                   file_name="latest_see_L3_merged.ncdf"):
+    def load_euv_spectra(self, file_path="data/latest_see_L3_merged.ncdf"):
         """ Load a netCDF4 file into the SolarIndex class
 
         Parameters
