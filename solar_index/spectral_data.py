@@ -90,12 +90,12 @@ class EUVspectra:
             for ss in self.species:
                 self.integrate_power(species=ss)
         except:
-            logging.error("unable to initiate SolarIndex class")
+            logging.error("unable to initiate EUVspectra class")
 
 
     def load_euv_spectra(self, file_dir="data",
                          file_name="latest_see_L3_merged.ncdf"):
-        """ Load a netCDF4 file into the SolarIndex class
+        """ Load a netCDF4 file into the EUVspectra class
 
         Parameters
         -----------
