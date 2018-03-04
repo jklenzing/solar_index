@@ -20,6 +20,6 @@ __version__ = str('0.1a2')
 #---------------------------------------------------------------------
 
 try:
-    from solar_index import (EUVspectra, omni)
+    from solar_index import (spectral_data)
 except ImportError as e:
     logging.exception('problem importing solar_index: ' + str(e))

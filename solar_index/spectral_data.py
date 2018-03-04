@@ -213,7 +213,7 @@ class EUVspectra:
         return(iflux)
 
 
-    def load_coeff(self,species='o'):
+    def load_coeff(self,species):
         """ Generates bins of photoabsorption coefficients using method
         described by Solomon et al, 2005.
 
