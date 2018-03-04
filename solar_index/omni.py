@@ -3,7 +3,7 @@
 # Copyright (C) 2018, JK & AGB
 # Full license can be found in License.md
 #-----------------------------------------------------------------------------
-""" Tools for calculating integrated solar indices.
+""" Tools for loading solar indices.
 
 Classes
 -------------------------------------------------------------------------------
