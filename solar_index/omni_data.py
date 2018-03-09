@@ -75,5 +75,30 @@ class OMNIvals:
                             for i in range(len(self.day))])
 
         self.Rz     = data[:,3]
-        self.F107   = data[:,4]
+        self.F107   = self._fill_nan(data[:,4])
         self.Lalpha = data[:,5]
+
+    def _fill_nan(self, x, fill_value=999.9, replace_value=np.nan):
+        """ Replaces missing values (-1) with nan
+
+        Parameters
+        ----------
+        x : (np.ndarray)
+            Array of values with some values possibly filled by a constant
+            fill_value : (float)
+                Value used to denote a lack of data (default=999.9)
+            replace_value : (float)
+                New fill value (default=np.nan)
+
+        Returns
+        -------
+        x : (np.ndarray)
+                Array of values with old fill values replaced with new fill values
+        """
+
+        assert isinstance(x, np.ndarray), \
+                    logging.error("x must be a numpy array")
+
+        x[x==fill_value] = replace_value
+
+        return x
