@@ -22,6 +22,7 @@ Solomon et al, 2005
 import datetime as dt
 import numpy as np
 import logging
+from solar_index import _data_dir
 
 class EUVspectra:
     """ Object containing TIMED/SEE EUV spectra and derived indices
@@ -75,11 +76,11 @@ class EUVspectra:
     _fill_nan(x)
         Replaces missing values (-1) with nan
     """
-    def __init__(self, file_dir="data", file_name="latest_see_L3_merged.ncdf"):
+    def __init__(self, file_dir=_data_dir, file_name="latest_see_L3_merged.ncdf"):
 
         try:
             # Load EUV data
-            self.load_euv_spectra(file_dir=file_dir, file_name=file_name)
+            self.load_euv_spectra(file_dir=_data_dir, file_name=file_name)
 
             # Initiate species and power
             self.species = ['o', 'n2', 'o2']

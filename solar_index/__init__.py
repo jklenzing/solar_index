@@ -13,11 +13,12 @@ Classes
 SolarIndex    Solar Index data
 """
 import logging
+import os
 
 __version__ = str('0.1a2')
 
-# Imports
-#---------------------------------------------------------------------
+_ROOT = os.path.abspath(os.path.dirname(__file__))
+_data_dir = os.path.join(_ROOT, "data")
 
 try:
     from solar_index import (spectral_data, omni_data)

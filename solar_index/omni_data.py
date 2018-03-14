@@ -20,6 +20,8 @@ References
 import datetime as dt
 import numpy as np
 import logging
+from solar_index import _data_dir
+
 
 class OMNIvals:
     """ Object containing OMNI solar indices
@@ -32,10 +34,10 @@ class OMNIvals:
     ----------
 
     """
-    def __init__(self, file_dir="data", file_name="omni2_daily_12664.txt"):
+    def __init__(self, file_dir=_data_dir, file_name="omni2_daily_12664.txt"):
 
         try:
-            self.load_omni_vals(file_dir,file_name)
+            self.load_omni_vals(_data_dir,file_name)
         except:
             logging.error("unable to initiate OMNIvals class")
 
