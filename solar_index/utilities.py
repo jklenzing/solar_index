@@ -17,6 +17,7 @@ Angeline G. Burrell, 19 April 2018, University of Texas at Dallas (UTD)
 -------------------------------------------------------------------------------
 """
 import logbook
+import numpy as np
 
 def replace_fill_array(data, fill_value=999.9, replace_value=np.nan):
     """ Replaces missing values in an array with a specified replacement value
@@ -48,7 +49,7 @@ def replace_fill_array(data, fill_value=999.9, replace_value=np.nan):
     return data
 
 
-def replace_fill_single(data_value fill_value=999.9, replace_value=np.nan):
+def replace_fill_single(data_value, fill_value=999.9, replace_value=np.nan):
     """ Tests to see if provided value is a fill value, and replaces if needed
 
     Parameters
