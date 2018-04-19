@@ -24,7 +24,7 @@ import numpy as np
 import logging
 from solar_index import _data_dir
 
-class EUVspectra:
+class EUVspectra(object):
     """ Object containing TIMED/SEE EUV spectra and derived indices
 
     Parameters
@@ -72,9 +72,6 @@ class EUVspectra:
     -------
     _integrate_bin(b,x,y,s)
         Integrates sp_flux over bin values
-
-    _fill_nan(x)
-        Replaces missing values (-1) with nan
     """
     def __init__(self, file_dir=_data_dir, file_name="latest_see_L3_merged.ncdf"):
 
@@ -111,6 +108,7 @@ class EUVspectra:
         """
         from netCDF4 import Dataset
         from os import path
+        from solar_index.utilities import replace_fill_array
 
         # Construct filename and load the data
         assert path.isdir(file_dir), logging.error("unknown file directory")
@@ -130,39 +128,13 @@ class EUVspectra:
                             dt.timedelta(days=int(self.day[i])-1)
                             for i in range(len(self.day))])
 
-        self.cor_1au = self._fill_nan(data.variables['COR_1AU'][0,:])
-        self.He2 = self._fill_nan(data.variables['LINE_FLUX'][0,:,1])
+        self.cor_1au = replace_fill_array(data.variables['COR_1AU'][0,:])
+        self.He2 = replace_fill_array(data.variables['LINE_FLUX'][0,:,1])
 
-        self.sp_wave = self._fill_nan(data.variables['SP_WAVE'][0,:])
-        self.sp_flux = self._fill_nan(data.variables['SP_FLUX'][0,:,:])
-        self.line_wave = self._fill_nan(data.variables['LINEWAVE'][0,:])
-        self.line_flux = self._fill_nan(data.variables['LINE_FLUX'][0,:,:])
-
-
-    def _fill_nan(self, x, fill_value=-1.0, replace_value=np.nan):
-        """ Replaces missing values (-1) with nan
-
-        Parameters
-        ----------
-        x : (np.ndarray)
-            Array of values with some values possibly filled by a constant
-            fill_value : (float)
-                Value used to denote a lack of data (default=-1.0)
-            replace_value : (float)
-                New fill value (default=np.nan)
-
-        Returns
-        -------
-        x : (np.ndarray)
-                Array of values with old fill values replaced with new fill values
-        """
-
-        assert isinstance(x, np.ndarray), \
-                    logging.error("x must be a numpy array")
-
-        x[x==fill_value] = replace_value
-
-        return x
+        self.sp_wave = replace_fill_array(data.variables['SP_WAVE'][0,:])
+        self.sp_flux = replace_fill_array(data.variables['SP_FLUX'][0,:,:])
+        self.line_wave = replace_fill_array(data.variables['LINEWAVE'][0,:])
+        self.line_flux = replace_fill_array(data.variables['LINE_FLUX'][0,:,:])
 
 
     def integrate_power(self, species):
