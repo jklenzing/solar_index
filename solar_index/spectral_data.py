@@ -21,8 +21,7 @@ Solomon et al, 2005
 
 import datetime as dt
 import numpy as np
-import logging
-from solar_index import _data_dir
+import logbook as logging
 
 class EUVspectra(object):
     """ Object containing TIMED/SEE EUV spectra and derived indices
@@ -67,22 +66,39 @@ class EUVspectra(object):
         Derived integrated avergae power delivered to Nitrogen molecules
     o2 : (float)
         Derived integrated avergae power delivered to Oxygen molecules
+    bins : (float)
+        coordinates of min and max of each bin in nm
+    area : (float)
+        The corresponding ionization cross-section (m^2)
 
     Methods
     -------
-    _integrate_bin(b,x,y,s)
+    load_euv_spectra(**kwargs)
+        Load the EUV spectra from a TIMED/SEE file
+    integrate_power(species)
+        Integrate the power for selected species
+    _integrate_bin(species, iarea)
         Integrates sp_flux over bin values
+    load_coeff(species)
+        Generates bins of photoabsorption coefficients [Solomon et al, 2005].
     """
-    def __init__(self, file_dir=_data_dir, file_name="latest_see_L3_merged.ncdf"):
+    def __init__(self, **kwargs):
 
         try:
             # Load EUV data
-            self.load_euv_spectra(file_dir=_data_dir, file_name=file_name)
+            self.load_euv_spectra(**kwargs)
 
             # Initiate species and power
             self.species = ['o', 'n2', 'o2']
             self.power = {skey:np.zeros(shape=self.year.shape)
                           for skey in self.species}
+            self.bins = np.array([[0.05, 0.4, 0.8, 1.8, 3.2, 7.0, 15.5, 22.4,
+                                   29.0, 32.0, 54.0, 65.0, 79.8, 91.3, 97.5,
+                                   98.7, 102.7],
+                                  [0.4, 0.8, 1.8, 3.2, 7.0, 15.5, 22.4, 29.0,
+                                   32.0, 54.0, 65.0, 79.8, 91.3, 97.5, 98.7,
+                                   102.7, 105.0]])
+            self.area = {ss:None for ss in self.species}
 
             # Integrate power for each species
             for ss in self.species:
@@ -91,14 +107,13 @@ class EUVspectra(object):
             logging.error("unable to initiate EUVspectra class")
 
 
-    def load_euv_spectra(self, file_dir="data",
-                         file_name="latest_see_L3_merged.ncdf"):
+    def load_euv_spectra(self, **kwargs):
         """ Load a netCDF4 file into the EUVspectra class
 
         Parameters
         -----------
         file_dir : (str)
-            Directory with data files (default='data')
+            Directory with data files (default=solar_index._data_dir)
         file_name : (str)
             Data filename (default='latest_see_L3_merged.ncdf')
 
@@ -109,12 +124,26 @@ class EUVspectra(object):
         from netCDF4 import Dataset
         from os import path
         from solar_index.utilities import replace_fill_array
+        from solar_index import _data_dir
+
+        # Define default values that may be specified by kwarg
+        # Done here to ensure _data_dir is defined.
+        file_dir = _data_dir
+        file_name = "latest_see_L3_merged.ncdf"
+
+        for kk in kwargs.keys():
+            if kk.lower() == "file_dir":
+                file_dir = kwargs[kk]
+            elif kk.lower() == "file_name":
+                self._file_name = kwargs[kk]
 
         # Construct filename and load the data
-        assert path.isdir(file_dir), logging.error("unknown file directory")
-        self.filename = ('%s/%s' % (file_dir, file_name))
+        assert path.isdir(file_dir), \
+            logging.error("unknown file directory {:s}".format(file_dir))
+        self.filename = path.join(file_dir, file_name)
 
-        assert path.isfile(self.filename), logging.error("unknown file")
+        assert path.isfile(self.filename), \
+            logging.error("unknown file {:s}".format(self.filename))
 
         try:
             data = Dataset(self.filename, 'r')
@@ -154,40 +183,38 @@ class EUVspectra(object):
         """
         assert species in self.species, logging.error("unknown species")
 
-        bins, area = self.load_coeff(species=species)
+        self.load_coeff(species=species)
 
-        for i,aa in enumerate(area):
-            self.power[species] += self.power[species] + \
-                                   self._integrate_bin(bins[:,i], self.sp_wave,
-                                                       self.sp_flux, aa)
+	for iarea in range(len(self.area[species])):
+	    self.power[species] += self.power[species] + \
+                                   self._integrate_bin(species, iarea)
 
 
-    def _integrate_bin(self,b,x,y,s):
+    def _integrate_bin(self, species, iarea):
         """ Integrates sp_flux over bin values
 
-        Parameters
-        ----------
-        b : (float)
-            bounds of bins (b0, b1)
-        x : (float)
-            wavelengths
-        y : (float)
-            flux spectra
-        s : (float)
-            ionization cross-section for bin of interest
+	Parameters
+	----------
+	species : (str)
+	    Atomic or molecular species
+	iarea : (int)
+	    Index of the area to integrate over
 
         Returns
         -------
         iflux : (float)
             Integrated flux for bin
         """
+
         d_lambda = 1.0 # nm
-        ind = (x >= b[0]) & (x < b[1])
-        iflux = s * np.sum(y[:,ind], axis=1) * d_lambda
-        return(iflux)
+	ind = (self.sp_wave >= self.bins[0,iarea]) & (self.sp_wave
+                                                      < self.bins[1,iarea])
+	iflux = self.area[species][iarea] * np.sum(self.sp_flux[:,ind],
+                                                   axis=1) * d_lambda
+	return iflux
 
 
-    def load_coeff(self,species):
+    def load_coeff(self, species):
         """ Generates bins of photoabsorption coefficients using method
         described by Solomon et al, 2005.
 
@@ -195,36 +222,29 @@ class EUVspectra(object):
         ----------
         species : (string)
                 String denoting coefficients to load ('o', 'o2', 'n2' supported)
-
-        Returns
-        -------
-        bins : (float)
-            coordinates of min and max of each bin in nm
-        area : (float)
-            The corresponding ionization cross-section (m^2)
         """
         assert species in self.species, logging.error("unknown species")
 
-        bins = np.array([[0.05, 0.4, 0.8, 1.8, 3.2, 7.0, 15.5, 22.4, 29.0, 32.0,
-          54.0, 65.0, 79.8, 91.3, 97.5, 98.7, 102.7],
-                 [0.4, 0.8, 1.8, 3.2, 7.0, 15.5, 22.4, 29.0, 32.0, 54.0,
-          65.0, 79.8, 91.3, 97.5, 98.7, 102.7, 105.0]])
-
         # Currently using lowest of split bins, units of square meters
         if species == 'o':
-            area = np.array([0.0023, 0.0170, 0.1125, 0.1050, 0.3247, 1.3190,
-                                 3.7832, 6.0239, 7.7205, 10.7175, 13.1253, 8.5159,
-                                 3.0031, 0.0000, 0.0000, 0.0000, 0.0000]) * 1.0e-22
+            self.area[species] = np.array([0.0023, 0.0170, 0.1125, 0.1050,
+                                           0.3247, 1.3190, 3.7832, 6.0239,
+                                           7.7205, 10.7175, 13.1253, 8.5159,
+                                           3.0031, 0.0000, 0.0000, 0.0000,
+                                           0.0000]) * 1.0e-22
         elif species == 'o2':
-            area = np.array([0.0045, 0.0340, 0.2251, 0.2101, 0.6460, 2.6319,
-                                 7.6283, 13.2125, 16.8233, 20.3066, 27.0314,
-                                 23.5669, 10.4980, 13.3950, 18.7145, 1.6320,
-                                 1.1500]) * 1.0e-22
+            self.area[species] = np.array([0.0045, 0.0340, 0.2251, 0.2101,
+                                           0.6460, 2.6319, 7.6283, 13.2125,
+                                           16.8233, 20.3066, 27.0314,
+                                           23.5669, 10.4980, 13.3950, 18.7145,
+                                           1.6320, 1.1500]) * 1.0e-22
         elif species == 'n2':
-            area = np.array([0.0025, 0.0201, 0.1409, 1.1370, 0.3459, 1.5273,
-                                 5.0859, 9.9375, 11.7383, 19.6514, 23.0931, 23.0346,
-                                 2.1434, 2.1775, 2.5465, 0.0000, 0.0000]) * 1.0e-22
+            self.area[species] = np.array([0.0025, 0.0201, 0.1409, 1.1370,
+                                           0.3459, 1.5273, 5.0859, 9.9375,
+                                           11.7383, 19.6514, 23.0931, 23.0346,
+                                           2.1434, 2.1775, 2.5465, 0.0000,
+                                           0.0000]) * 1.0e-22
         else:
             raise Exception('Invalid species')
 
-        return bins, area
+        return
