@@ -185,20 +185,20 @@ class EUVspectra(object):
 
         self.load_coeff(species=species)
 
-	for iarea in range(len(self.area[species])):
-	    self.power[species] += self.power[species] + \
+        for iarea in range(len(self.area[species])):
+            self.power[species] += self.power[species] + \
                                    self._integrate_bin(species, iarea)
 
 
     def _integrate_bin(self, species, iarea):
         """ Integrates sp_flux over bin values
 
-	Parameters
-	----------
-	species : (str)
-	    Atomic or molecular species
-	iarea : (int)
-	    Index of the area to integrate over
+    Parameters
+    ----------
+    species : (str)
+        Atomic or molecular species
+    iarea : (int)
+        Index of the area to integrate over
 
         Returns
         -------
@@ -207,11 +207,11 @@ class EUVspectra(object):
         """
 
         d_lambda = 1.0 # nm
-	ind = (self.sp_wave >= self.bins[0,iarea]) & (self.sp_wave
+        ind = (self.sp_wave >= self.bins[0,iarea]) & (self.sp_wave
                                                       < self.bins[1,iarea])
-	iflux = self.area[species][iarea] * np.sum(self.sp_flux[:,ind],
+        iflux = self.area[species][iarea] * np.sum(self.sp_flux[:,ind],
                                                    axis=1) * d_lambda
-	return iflux
+        return iflux
 
 
     def load_coeff(self, species):
