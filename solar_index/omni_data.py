@@ -19,34 +19,49 @@ References
 
 import datetime as dt
 import numpy as np
-import logging
-from solar_index import _data_dir
-
+import logbook as logging
 
 class OMNIvals:
     """ Object containing OMNI solar indices
 
-    Parameters
-    ----------
-
+    Keyword Arguments
+    ------------------
+        file_dir : (str)
+            Directory with data files (default=solar_index._data_dir)
+        file_name : (str)
+            Data filename (default='omni2_daily_12664.txt')
 
     Attributes
     ----------
+    self.year : (np.array)
+        Integer year
+    self.day : (np.array)
+        Integer day
+    self.dt : (np.array)
+        datetime
+    self.Rz : (np.array)
+        Rz index
+    self.F107 : (np.array)
+        10.7 cm flux index in solar flux units
+    self.Lalpha : (np.array)
+        Lyman alpha
 
+    Methods
+    --------
+    load_omni_vals : Load the values from an ASCII file
     """
-    def __init__(self, file_dir=_data_dir, file_name="omni2_daily_12664.txt"):
+    def __init__(self, **kwargs):
 
         try:
-            self.load_omni_vals(_data_dir,file_name)
+            self.load_omni_vals(**kwargs)
         except:
             logging.error("unable to initiate OMNIvals class")
 
-    def load_omni_vals(self, file_dir="data",
-                         file_name="omni2_daily_12664.txt"):
+    def load_omni_vals(self, **kwargs):
         """ Load an ascii file into the OMNIvals class
 
-        Parameters
-        -----------
+        Keyword Arguments
+        --------------------
         file_dir : (str)
             Directory with data files (default='data')
         file_name : (str)
@@ -58,17 +73,31 @@ class OMNIvals:
         """
 
         from os import path
+        from solar_index import utilities, _data_dir
+
+        # Define the default data file and update using kwargs
+        file_dir = _data_dir
+        file_name = "omni2_daily_12664.txt"
+
+        for kk in kwargs.keys():
+            if kk.lower() == "file_dir":
+                file_dir = kwargs[kk]
+            elif kk.lower() == "file_name":
+                file_name = kwargs[kk]
 
         # Construct filename and load the data
-        assert path.isdir(file_dir), logging.error("unknown file directory")
-        self.filename = ('%s/%s' % (file_dir, file_name))
+        assert path.isdir(file_dir), \
+            logging.error("unknown file directory {:s}".format(file_dir))
+        self.filename = path.join(file_dir, file_name)
 
-        assert path.isfile(self.filename), logging.error("unknown file")
+        assert path.isfile(self.filename), \
+            logging.error("unknown file {:s}".format(self.filename))
 
         try:
             data = np.loadtxt(self.filename)
         except:
-            logging.error("unable to load ascii file")
+            estr = "unable to load ascii file {:s}".format(self.filename)
+            logging.error(estr)
 
         self.year = data[:,0]
         self.day = data[:,1]
@@ -77,30 +106,5 @@ class OMNIvals:
                             for i in range(len(self.day))])
 
         self.Rz     = data[:,3]
-        self.F107   = self._fill_nan(data[:,4])
+        self.F107   = utilities.replace_fill_array(data[:,4])
         self.Lalpha = data[:,5]
-
-    def _fill_nan(self, x, fill_value=999.9, replace_value=np.nan):
-        """ Replaces missing values (-1) with nan
-
-        Parameters
-        ----------
-        x : (np.ndarray)
-            Array of values with some values possibly filled by a constant
-            fill_value : (float)
-                Value used to denote a lack of data (default=999.9)
-            replace_value : (float)
-                New fill value (default=np.nan)
-
-        Returns
-        -------
-        x : (np.ndarray)
-                Array of values with old fill values replaced with new fill values
-        """
-
-        assert isinstance(x, np.ndarray), \
-                    logging.error("x must be a numpy array")
-
-        x[x==fill_value] = replace_value
-
-        return x
