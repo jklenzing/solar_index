@@ -186,8 +186,7 @@ class EUVspectra(object):
         self.load_coeff(species=species)
 
         for iarea in range(len(self.area[species])):
-            self.power[species] += self.power[species] + \
-                                   self._integrate_bin(species, iarea)
+            self.power[species] += self._integrate_bin(species, iarea)
 
 
     def _integrate_bin(self, species, iarea):
