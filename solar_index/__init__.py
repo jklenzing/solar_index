@@ -19,6 +19,7 @@ __version__ = str('0.1a2')
 
 _ROOT = path.abspath(path.dirname(__file__))
 _data_dir = path.join(_ROOT, "data")
+_graph_dir = path.join(_ROOT, "graphs")
 
 try:
     from solar_index import (spectral_data, omni_data, utilities)

@@ -92,12 +92,8 @@ class EUVspectra(object):
             self.species = ['o', 'n2', 'o2']
             self.power = {skey:np.zeros(shape=self.year.shape)
                           for skey in self.species}
-            self.bins = np.array([[0.05, 0.4, 0.8, 1.8, 3.2, 7.0, 15.5, 22.4,
-                                   29.0, 32.0, 54.0, 65.0, 79.8, 91.3, 97.5,
-                                   98.7, 102.7],
-                                  [0.4, 0.8, 1.8, 3.2, 7.0, 15.5, 22.4, 29.0,
-                                   32.0, 54.0, 65.0, 79.8, 91.3, 97.5, 98.7,
-                                   102.7, 105.0]])
+            self.bins = np.array([np.arange(5.0,100.1,5.0),
+                                  np.arange(10.0,105.1,5.0)])
             self.area = {ss:None for ss in self.species}
 
             # Integrate power for each species
@@ -192,11 +188,11 @@ class EUVspectra(object):
     def _integrate_bin(self, species, iarea):
         """ Integrates sp_flux over bin values
 
-    Parameters
-    ----------
-    species : (str)
+        Parameters
+        ----------
+        species : (str)
         Atomic or molecular species
-    iarea : (int)
+        iarea : (int)
         Index of the area to integrate over
 
         Returns
@@ -206,16 +202,18 @@ class EUVspectra(object):
         """
 
         d_lambda = 1.0 # nm
-        ind = (self.sp_wave >= self.bins[0,iarea]) & (self.sp_wave
-                                                      < self.bins[1,iarea])
-        iflux = self.area[species][iarea] * np.sum(self.sp_flux[:,ind],
+        ind = (self.sp_wave >= self.bins[0,iarea]) &\
+              (self.sp_wave < self.bins[1,iarea])
+        iflux = self.area[species][iarea] * np.sum(self.sp_flux[:,ind],\
                                                    axis=1) * d_lambda
         return iflux
 
 
     def load_coeff(self, species):
         """ Generates bins of photoabsorption coefficients using method
-        described by Solomon et al, 2005.
+        described by Richards et al, 1994.
+
+        Note: Only the wide bins are currently included, not the lines.
 
         Parameters
         ----------
@@ -226,23 +224,26 @@ class EUVspectra(object):
 
         # Currently using lowest of split bins, units of square meters
         if species == 'o':
-            self.area[species] = np.array([0.0023, 0.0170, 0.1125, 0.1050,
-                                           0.3247, 1.3190, 3.7832, 6.0239,
-                                           7.7205, 10.7175, 13.1253, 8.5159,
-                                           3.0031, 0.0000, 0.0000, 0.0000,
-                                           0.0000]) * 1.0e-22
-        elif species == 'o2':
-            self.area[species] = np.array([0.0045, 0.0340, 0.2251, 0.2101,
-                                           0.6460, 2.6319, 7.6283, 13.2125,
-                                           16.8233, 20.3066, 27.0314,
-                                           23.5669, 10.4980, 13.3950, 18.7145,
-                                           1.6320, 1.1500]) * 1.0e-22
+            self.area[species] = np.array([0.73, 1.839, 3.732, 5.202,
+                                           6.461, 8.693, 9.687, 11.496,
+                                           12.127, 12.059, 13.024, 13.365,
+                                           17.245, 10.736, 5.091, 3.498,
+                                           4.554, 1.315, 0.0, 0.0
+                                           ]) * 1.0e-22
         elif species == 'n2':
-            self.area[species] = np.array([0.0025, 0.0201, 0.1409, 1.1370,
-                                           0.3459, 1.5273, 5.0859, 9.9375,
-                                           11.7383, 19.6514, 23.0931, 23.0346,
-                                           2.1434, 2.1775, 2.5465, 0.0000,
-                                           0.0000]) * 1.0e-22
+            self.area[species] = np.array([0.72, 2.261, 4.958, 8.392,
+                                           10.493, 13.857, 16.395, 21.675,
+                                           23.471, 24.501, 22.787, 23.339,
+                                           31.755, 24.662, 33.578, 16.992,
+                                           20.249, 9.680, 50.988, 0.0
+                                           ]) * 1.0e-22
+        elif species == 'o2':
+            self.area[species] = np.array([1.316, 3.806, 7.509, 10.9,
+                                           14.387, 17.438, 18.118, 20.31,
+                                           23.101, 24.606, 26.61, 26.017,
+                                           21.919, 28.535, 22.145, 16.631,
+                                           8.562, 12.817, 21.108, 1.346
+                                           ]) * 1.0e-22
         else:
             raise Exception('Invalid species')
 
