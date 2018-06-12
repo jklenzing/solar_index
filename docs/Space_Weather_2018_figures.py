@@ -8,6 +8,14 @@ import scipy
 S = solar_index.EUVspectra()
 F = solar_index.OMNIvals()
 
+
+#### Figure 1
+plt.plot(S.bins[0,:],S.area['o'])
+plt.xlabel('Wavelength [nm]')
+plt.ylabel('Photoabsorption Cross-section [m$^2$]')
+plt.savefig('figure1.png')
+plt.close()
+
 ind1 = ~np.isnan(S.power['o'])
 Opow = pd.Series(S.power['o'][ind1], index=S.dt[ind1])
 
@@ -27,11 +35,13 @@ F107_mean = df['F10.7'].rolling(window=window,center=True).mean()
 F107_std = df['F10.7'].rolling(window=window,center=True).std()
 F107_nrm = (df['F10.7']-F107_mean)/F107_std
 
+r,p = scipy.stats.pearsonr(df['F10.7'],df['Opow'])
 ind = ~np.isnan(F107_nrm)
-r,p = scipy.stats.pearsonr(F107_nrm[ind],Opow_nrm[ind])
+rm,pm = scipy.stats.pearsonr(F107_mean[ind],Opow_mean[ind])
+rn,pn = scipy.stats.pearsonr(F107_nrm[ind],Opow_nrm[ind])
 
-print(r)
-print(p)
+print([r,rm,rn])
+print([p,pm,pn])
 
 plt.ion()
 plt.plot(F107_nrm, label='F10.7', color = 'k')
