@@ -32,6 +32,7 @@ Opow_std = df['Opow'].rolling(window=window,center=True).std()
 Opow_nrm = (df['Opow']-Opow_mean)/Opow_std
 
 F107_mean = df['F10.7'].rolling(window=window,center=True).mean()
+F107_p = (df['F10.7']+F107_mean)/2.0
 F107_std = df['F10.7'].rolling(window=window,center=True).std()
 F107_nrm = (df['F10.7']-F107_mean)/F107_std
 
@@ -44,6 +45,11 @@ print([r,rm,rn])
 print([p,pm,pn])
 
 plt.ion()
-plt.plot(F107_nrm, label='F10.7', color = 'k')
-plt.plot(Opow_nrm, label='O power', color='r')
-plt.legend()
+f, axarr = plt.subplots(2, sharex=True)
+axarr[1].plot(F107_nrm, label='F10.7', color = 'k')
+axarr[1].plot(Opow_nrm, label='O power', color='r')
+axarr[1].legend()
+
+axarr[0].plot(df['F10.7'], label='F10.7', color = 'k')
+axarr[0].plot(Opow_nrm*F107_std+F107_mean, label='O power', color='r')
+axarr[0].legend()
