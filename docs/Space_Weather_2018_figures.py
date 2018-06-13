@@ -60,7 +60,8 @@ plt.close()
 #### Figure 3
 #### Scatter Plot of daily values Opow vs F10.7
 lower_limit = 0.05
-values = (F107_std/F107_mean>lower_limit) & (Opow_std/Opow_mean>lower_limit)
+values = (df['F107_std']/df['F107_mean']>lower_limit) & \
+         (df['Opow_std']/df['Opow_mean']>lower_limit)
 
 f, axarr = plt.subplots(1,2)
 axarr[0].plot(df['F107'][values],df['Opow'][values]*1e24,'.k')
@@ -78,7 +79,7 @@ plt.close()
 
 
 r,p = scipy.stats.pearsonr(df['F107'][values],df['Opow'][values])
-ind = (~np.isnan(F107_nrm)) & values
+ind = (~np.isnan(df['F107_nrm'])) & values
 rm,pm = scipy.stats.pearsonr(df['F107_mean'][ind],df['Opow_mean'][ind])
 rn,pn = scipy.stats.pearsonr(df['F107_nrm'][ind],df['Opow_nrm'][ind])
 
