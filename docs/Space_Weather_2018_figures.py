@@ -39,9 +39,12 @@ F107_std = df['F10.7'].rolling(window=window,center=True).std()
 F107_nrm = (df['F10.7']-F107_mean)/F107_std
 
 #### Figure 2
-
 plt.ion()
-f, axarr = plt.subplots(2, sharex=True)
+f, axarr = plt.subplots(3, sharex=True)
+axarr[2].plot(F107_std/F107_mean, label='F10.7', color = 'k')
+axarr[2].plot(Opow_std/Opow_mean, label='O power', color='r')
+axarr[2].legend()
+
 axarr[1].plot(F107_nrm, label='F10.7', color = 'k')
 axarr[1].plot(Opow_nrm, label='O power', color='r')
 axarr[1].legend()
@@ -50,17 +53,18 @@ axarr[0].plot(df['F10.7'], label='F10.7', color = 'k')
 axarr[0].plot(Opow_nrm*F107_std+F107_mean, label='O power', color='r')
 axarr[0].legend()
 
-#### Wavelet analysis of F10.7 and EUV data
-
-#### Figure 3
-
 #### Correlation coefficients of datasets
-r,p = scipy.stats.pearsonr(df['F10.7'],df['Opow'])
-ind = ~np.isnan(F107_nrm)
+
+lower_limit = 0.05
+
+values = (F107_std/F107_mean>lower_limit) & (Opow_std/Opow_mean>lower_limit)
+r,p = scipy.stats.pearsonr(df['F10.7'][values],df['Opow'][values])
+ind = (~np.isnan(F107_nrm)) & values
 rm,pm = scipy.stats.pearsonr(F107_mean[ind],Opow_mean[ind])
 rn,pn = scipy.stats.pearsonr(F107_nrm[ind],Opow_nrm[ind])
 
-print([r,rm,rn])
+print('%5.3f  %5.3f  %5.3f' % (r,rm,rn))
 print([p,pm,pn])
+print([len(ind),sum(ind)])
 
 #### Time Lag Analysis
