@@ -13,7 +13,7 @@ F = solar_index.OMNIvals()
 plt.plot(S.bins[0,:],S.area['o'])
 plt.xlabel('Wavelength [nm]')
 plt.ylabel('Photoabsorption Cross-section [m$^2$]')
-plt.savefig('figure1.png')
+plt.savefig('SW2018graphs/figure1.png')
 plt.close()
 
 #### Normalization of datasets
