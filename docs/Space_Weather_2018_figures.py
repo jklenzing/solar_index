@@ -20,7 +20,7 @@ plt.close()
 #### Normalization of datasets
 
 ind1 = ~np.isnan(S.power['o'])
-Opow = pd.Series(S.power['o'][ind1], index=S.dt[ind1])
+Opow = pd.Series(S.power['o'][ind1], index=S.dt[ind1])*1e24
 
 ind2 = ~np.isnan(F.F107)
 F107 = pd.Series(F.F107[ind2], index=F.dt[ind2])
@@ -64,7 +64,7 @@ values = (df['F107_std']/df['F107_mean']>lower_limit) & \
          (df['Opow_std']/df['Opow_mean']>lower_limit)
 
 f, axarr = plt.subplots(1,2)
-axarr[0].plot(df['F107'][values],df['Opow'][values]*1e24,'.k')
+axarr[0].plot(df['F107'][values],df['Opow'][values],'.k')
 axarr[0].set_xlabel('F10.7 (sfu)')
 axarr[0].set_ylabel('O power (yW)')
 
