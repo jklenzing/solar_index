@@ -83,7 +83,17 @@ ind = (~np.isnan(df['F107_nrm'])) & values
 rm,pm = scipy.stats.pearsonr(df['F107_mean'][ind],df['Opow_mean'][ind])
 rn,pn = scipy.stats.pearsonr(df['F107_nrm'][ind],df['Opow_nrm'][ind])
 
-print('%5.3f  %5.3f  %5.3f' % (r,rm,rn))
+sns.jointplot('F107','Opow',data=df, kind="reg", size=7)
+plt.savefig('SW2018graphs/figure4.png')
+plt.close()
+
+sns.jointplot('F107_nrm','Opow_nrm',data=df, kind="reg", size=7)
+plt.savefig('SW2018graphs/figure5.png')
+plt.close()
+
+print('Correlation of raw values = %5.3f' % r)
+print('Correlation of mean values = %5.3f' % rm)
+print('Correlation of normalized values = %5.3f' % rn)
 print([p,pm,pn])
 print([len(ind),sum(ind)])
 
