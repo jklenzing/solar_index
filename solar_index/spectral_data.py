@@ -90,7 +90,7 @@ class EUVspectra(object):
             self.load_euv_spectra(**kwargs)
 
             # Initiate species and power
-            self.species = ['o', 'n2', 'o2']
+            self.species = ['all', 'o', 'n2', 'o2']
             self.power = {skey: np.zeros(shape=self.year.shape)
                           for skey in self.species}
             self.bins = np.array([np.arange(5.0, 100.1, 5.0),
@@ -221,7 +221,9 @@ class EUVspectra(object):
         assert species in self.species, logging.error("unknown species")
 
         # Currently using lowest of split bins, units of square meters
-        if species == 'o':
+        if species == 'all':
+            self.area[species] = np.ones(20) * 1.0e-22
+        elif species == 'o':
             self.area[species] = np.array([0.73, 1.839, 3.732, 5.202,
                                            6.461, 8.693, 9.687, 11.496,
                                            12.127, 12.059, 13.024, 13.365,
