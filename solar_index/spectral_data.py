@@ -21,7 +21,6 @@ Solomon et al, 2005
 
 import datetime as dt
 import numpy as np
-import logbook as logging
 
 
 class EUVspectra(object):
@@ -101,7 +100,7 @@ class EUVspectra(object):
             for ss in self.species:
                 self.integrate_power(species=ss)
         except FileNotFoundError:
-            logging.error("unable to initiate EUVspectra class")
+            raise FileNotFoundError("unable to initiate EUVspectra class")
 
     def load_euv_spectra(self, **kwargs):
         """ Load a netCDF4 file into the EUVspectra class
@@ -134,17 +133,17 @@ class EUVspectra(object):
                 self._file_name = kwargs[kk]
 
         # Construct filename and load the data
-        assert path.isdir(file_dir), \
-            logging.error("unknown file directory {:s}".format(file_dir))
+        if not path.isdir(file_dir):
+            raise Error("unknown file directory {:s}".format(file_dir))
         self.filename = path.join(file_dir, file_name)
 
-        assert path.isfile(self.filename), \
-            logging.error("unknown file {:s}".format(self.filename))
+        if not path.isfile(self.filename):
+            raise Error("unknown file {:s}".format(self.filename))
 
         try:
             data = Dataset(self.filename, 'r')
         except FileNotFoundError:
-            logging.error("unable to load netCDF4 file")
+            raise Error("unable to load netCDF4 file")
 
         # Assign the time data
         self.year = np.floor(data.variables['DATE'][0, :] / 1000.0).astype(int)
@@ -177,7 +176,8 @@ class EUVspectra(object):
             Dictionary containing the average power delivered to a given ion as
             a timeseries.
         """
-        assert species in self.species, logging.error("unknown species")
+        if species not in self.species:
+            raise Error("unknown species")
 
         self.load_coeff(species=species)
 
@@ -218,7 +218,8 @@ class EUVspectra(object):
         species : (string)
                 String denoting coefficients to load (eg, 'o', 'o2', 'n2')
         """
-        assert species in self.species, logging.error("unknown species")
+        if species not in self.species:
+            raise Error("unknown species")
 
         # Currently using lowest of split bins, units of square meters
         if species == 'all':

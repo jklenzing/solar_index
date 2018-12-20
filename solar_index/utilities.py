@@ -16,7 +16,6 @@ Moduleauthor
 Angeline G. Burrell, 19 April 2018, University of Texas at Dallas (UTD)
 -------------------------------------------------------------------------------
 """
-import logbook
 import numpy as np
 
 
@@ -42,7 +41,7 @@ def replace_fill_array(data, fill_value=-1.0, replace_value=np.nan):
         try:
             data = np.array(data)
         except TypeError:
-            logbook.error("input data must be a numpy array")
+            raise Error("input data must be a numpy array")
             return data
 
     data[data == fill_value] = replace_value

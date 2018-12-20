@@ -12,7 +12,6 @@ Classes
 ---------------------------------------------------------------------------
 SolarIndex    Solar Index data
 """
-import logbook as logging
 from os import path
 
 __version__ = str('0.1a2')
@@ -25,4 +24,4 @@ try:
     from solar_index.spectral_data import EUVspectra
     from solar_index.omni_data import OMNIvals
 except ImportError as err:
-    logging.exception('problem importing solar_index: ' + str(err))
+    raise ImportError('problem importing solar_index: ' + str(err))

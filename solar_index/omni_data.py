@@ -19,7 +19,6 @@ References
 
 import datetime as dt
 import numpy as np
-import logbook as logging
 
 
 class OMNIvals:
@@ -87,18 +86,18 @@ class OMNIvals:
                 file_name = kwargs[kk]
 
         # Construct filename and load the data
-        assert path.isdir(file_dir), \
-            logging.error("unknown file directory {:s}".format(file_dir))
+        if not path.isdir(file_dir):
+            raise FileNotFoundError("unknown file directory {:s}".format(file_dir))
         self.filename = path.join(file_dir, file_name)
 
-        assert path.isfile(self.filename), \
-            logging.error("unknown file {:s}".format(self.filename))
+        if not path.isfile(self.filename):
+            raise FileNotFoundError("unknown file {:s}".format(self.filename))
 
         try:
             data = np.loadtxt(self.filename)
         except:
             estr = "unable to load ascii file {:s}".format(self.filename)
-            logging.error(estr)
+            raise ImportError(estr)
 
         self.year = data[:, 0]
         self.day = data[:, 1]
