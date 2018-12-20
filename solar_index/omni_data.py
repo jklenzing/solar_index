@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2018, JK & AGB
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """ Tools for loading solar indices.
 
 Classes
@@ -20,6 +20,7 @@ References
 import datetime as dt
 import numpy as np
 import logbook as logging
+
 
 class OMNIvals:
     """ Object containing OMNI solar indices
@@ -99,12 +100,12 @@ class OMNIvals:
             estr = "unable to load ascii file {:s}".format(self.filename)
             logging.error(estr)
 
-        self.year = data[:,0]
-        self.day = data[:,1]
-        self.dt = np.array([dt.datetime(int(self.year[i]),1,1) +
+        self.year = data[:, 0]
+        self.day = data[:, 1]
+        self.dt = np.array([dt.datetime(int(self.year[i]), 1, 1) +
                             dt.timedelta(days=int(self.day[i])-1)
                             for i in range(len(self.day))])
 
-        self.Rz     = data[:,3]
-        self.F107   = utilities.replace_fill_array(data[:,4],fill_value=999.9)
-        self.Lalpha = data[:,5]
+        self.Rz = data[:, 3]
+        self.F107 = utilities.replace_fill_array(data[:, 4], fill_value=999.9)
+        self.Lalpha = data[:, 5]

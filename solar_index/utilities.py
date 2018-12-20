@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2018, JK & AGB
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """ Common functions used for different data types and classes
 
 Modules
@@ -18,6 +18,7 @@ Angeline G. Burrell, 19 April 2018, University of Texas at Dallas (UTD)
 """
 import logbook
 import numpy as np
+
 
 def replace_fill_array(data, fill_value=-1.0, replace_value=np.nan):
     """ Replaces missing values in an array with a specified replacement value
@@ -40,11 +41,11 @@ def replace_fill_array(data, fill_value=-1.0, replace_value=np.nan):
     if not isinstance(data, np.ndarray):
         try:
             data = np.array(data)
-        except:
+        except TypeError:
             logbook.error("input data must be a numpy array")
             return data
 
-    data[data==fill_value] = replace_value
+    data[data == fill_value] = replace_value
 
     return data
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK & AGB
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """ Tools for calculating integrated solar indices from EUV Spectra.
 
 Classes
@@ -22,6 +22,7 @@ Solomon et al, 2005
 import datetime as dt
 import numpy as np
 import logbook as logging
+
 
 class EUVspectra(object):
     """ Object containing TIMED/SEE EUV spectra and derived indices
@@ -90,18 +91,17 @@ class EUVspectra(object):
 
             # Initiate species and power
             self.species = ['o', 'n2', 'o2']
-            self.power = {skey:np.zeros(shape=self.year.shape)
+            self.power = {skey: np.zeros(shape=self.year.shape)
                           for skey in self.species}
-            self.bins = np.array([np.arange(5.0,100.1,5.0),
-                                  np.arange(10.0,105.1,5.0)])
-            self.area = {ss:None for ss in self.species}
+            self.bins = np.array([np.arange(5.0, 100.1, 5.0),
+                                  np.arange(10.0, 105.1, 5.0)])
+            self.area = {ss: None for ss in self.species}
 
             # Integrate power for each species
             for ss in self.species:
                 self.integrate_power(species=ss)
-        except:
+        except FileNotFoundError:
             logging.error("unable to initiate EUVspectra class")
-
 
     def load_euv_spectra(self, **kwargs):
         """ Load a netCDF4 file into the EUVspectra class
@@ -143,24 +143,24 @@ class EUVspectra(object):
 
         try:
             data = Dataset(self.filename, 'r')
-        except:
+        except FileNotFoundError:
             logging.error("unable to load netCDF4 file")
 
         # Assign the time data
-        self.year = np.floor(data.variables['DATE'][0,:] / 1000.0).astype(int)
-        self.day = np.mod(data.variables['DATE'][0,:], 1000).astype(int)
-        self.dt = np.array([dt.datetime(int(self.year[i]),1,1) +
+        self.year = np.floor(data.variables['DATE'][0, :] / 1000.0).astype(int)
+        self.day = np.mod(data.variables['DATE'][0, :], 1000).astype(int)
+        self.dt = np.array([dt.datetime(int(self.year[i]), 1, 1) +
                             dt.timedelta(days=int(self.day[i])-1)
                             for i in range(len(self.day))])
 
-        self.cor_1au = replace_fill_array(data.variables['COR_1AU'][0,:])
-        self.He2 = replace_fill_array(data.variables['LINE_FLUX'][0,:,1])
+        self.cor_1au = replace_fill_array(data.variables['COR_1AU'][0, :])
+        self.He2 = replace_fill_array(data.variables['LINE_FLUX'][0, :, 1])
 
-        self.sp_wave = replace_fill_array(data.variables['SP_WAVE'][0,:])
-        self.sp_flux = replace_fill_array(data.variables['SP_FLUX'][0,:,:])
-        self.line_wave = replace_fill_array(data.variables['LINEWAVE'][0,:])
-        self.line_flux = replace_fill_array(data.variables['LINE_FLUX'][0,:,:])
-
+        self.sp_wave = replace_fill_array(data.variables['SP_WAVE'][0, :])
+        self.sp_flux = replace_fill_array(data.variables['SP_FLUX'][0, :, :])
+        self.line_wave = replace_fill_array(data.variables['LINEWAVE'][0, :])
+        self.line_flux = replace_fill_array(data.variables['LINE_FLUX'][0, :,
+                                                                        :])
 
     def integrate_power(self, species):
         """ Integrates EUV spectra times photoionization cross-section
@@ -184,7 +184,6 @@ class EUVspectra(object):
         for iarea in range(len(self.area[species])):
             self.power[species] += self._integrate_bin(species, iarea)
 
-
     def _integrate_bin(self, species, iarea):
         """ Integrates sp_flux over bin values
 
@@ -201,13 +200,12 @@ class EUVspectra(object):
             Integrated flux for bin
         """
 
-        d_lambda = 1.0 # nm
-        ind = (self.sp_wave >= self.bins[0,iarea]) &\
-              (self.sp_wave < self.bins[1,iarea])
-        iflux = self.area[species][iarea] * np.sum(self.sp_flux[:,ind],\
+        d_lambda = 1.0  # nm
+        ind = (self.sp_wave >= self.bins[0, iarea]) &\
+              (self.sp_wave < self.bins[1, iarea])
+        iflux = self.area[species][iarea] * np.sum(self.sp_flux[:, ind],
                                                    axis=1) * d_lambda
         return iflux
-
 
     def load_coeff(self, species):
         """ Generates bins of photoabsorption coefficients using method
@@ -218,7 +216,7 @@ class EUVspectra(object):
         Parameters
         ----------
         species : (string)
-                String denoting coefficients to load ('o', 'o2', 'n2' supported)
+                String denoting coefficients to load (eg, 'o', 'o2', 'n2')
         """
         assert species in self.species, logging.error("unknown species")
 
