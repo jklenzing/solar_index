@@ -223,7 +223,7 @@ class EUVspectra(object):
 
         # Currently using lowest of split bins, units of square meters
         if species == 'all':
-            self.area[species] = np.ones(20) * 1.0e-22
+            self.area[species] = np.ones(20)
         elif species == 'o':
             self.area[species] = np.array([0.73, 1.839, 3.732, 5.202,
                                            6.461, 8.693, 9.687, 11.496,
