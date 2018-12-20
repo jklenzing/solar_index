@@ -44,7 +44,7 @@ setup(name='solar_index',
       ],
       install_requires=[
           'numpy',
-          'logbook'
+          'datetime'
       ],
       include_package_data=True,
       zip_safe=False,
