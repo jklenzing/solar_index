@@ -1,4 +1,4 @@
-pre-alpha version.  Use with extreme caution!
+alpha version.  Use with caution!
 
 The solar_index package is designed to compare various proxies and measurements
 for solar activity, such as sunspot number and F10.7, over a variety of
@@ -15,6 +15,10 @@ future.
   * EUV spectra (0.5-194.5 nm) from TIMED/SEE (http://lasp.colorado.edu/home/see/data/)
   * Integrated power of EUV from 5-105 nm (S.power['all'])
 
-The alpha version of this code (in development) will reorganize using pysat to
+The alpha version was developed as a "proof-of-concept" for comparing the day-
+to-day variability of commonly used solar indices with measured EUV spectra
+for use in driving upper atmospheric models.
+
+The beta version of this code (in development) will reorganize using pysat to
 allow the indices to be updated rather than hard-coded.  Additionally, more
 proxies will be added.  Please contact the code author regarding questions.
