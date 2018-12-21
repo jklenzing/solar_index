@@ -15,5 +15,6 @@ future.
   * EUV spectra (0.5-194.5 nm) from TIMED/SEE (http://lasp.colorado.edu/home/see/data/)
   * Integrated power of EUV from 5-105 nm (S.power['all'])
 
-The alpha version of this code will reorganize using pysat to allow the indices
-to be updated rather than hard-coded.  Additionally, more proxies will be added.  Please contact the code author regarding questions.
+The alpha version of this code (in development) will reorganize using pysat to
+allow the indices to be updated rather than hard-coded.  Additionally, more
+proxies will be added.  Please contact the code author regarding questions.
