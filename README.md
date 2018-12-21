@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/111730061.svg)](https://zenodo.org/badge/latestdoi/111730061)
+
 alpha version.  Use with caution!
 
 The solar_index package is designed to compare various proxies and measurements
