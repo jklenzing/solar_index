@@ -8,14 +8,19 @@
 
 from __future__ import (print_function)
 from solar_index import EUVspectra
-import unittest
+from nose.tools import assert_raises, raises
+import nose.tools
 import numpy as np
 
 
-class TestEUV(unittest.TestCase):
+class TestEUV():
+
+    def setup(self):
+        """Runs before every method to create a clean testing setup."""
+        self.testEUV = EUVspectra()
 
     def test(self):
-        self.assertTrue(True)
+        assert (True)
 
 
 if __name__ == '__main__':
