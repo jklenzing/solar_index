@@ -4,7 +4,7 @@ python:
   - "3.6"
 sudo: false
 before_install:
-  - sudo apt-get install -y netCDF4
+  - pip install netCDF4
 install:
   - source activate test-environment
   - "python setup.py install"
