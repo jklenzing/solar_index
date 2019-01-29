@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/jklenzing/solar_index.svg?branch=master)](https://travis-ci.com/jklenzing/solar_index)
 [![DOI](https://zenodo.org/badge/111730061.svg)](https://zenodo.org/badge/latestdoi/111730061)
 
 alpha version.  Use with caution!
