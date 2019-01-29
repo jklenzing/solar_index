@@ -23,9 +23,6 @@ class TestOMNI():
         """Runs after every method to clean up previous testing."""
         del self.testOMNI
 
-    def test(self):
-        assert (True)
-
     @raises(Exception)
     def test_omni_load_w_bad_directory(self):
         """Tests """
