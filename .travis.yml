@@ -6,3 +6,5 @@ sudo: false
 install:
   - source activate test-environment
   - "python setup.py install"
+script:
+  - "nosetests -vs --with-coverage --cover-package=solar_index"
