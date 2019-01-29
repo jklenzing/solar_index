@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/jklenzing/solar_index.svg?branch=master)](https://travis-ci.com/jklenzing/solar_index)
+[![Coverage Status](https://coveralls.io/repos/github/jklenzing/solar_index/badge.svg?branch=master)](https://coveralls.io/github/jklenzing/solar_index?branch=master)
 [![DOI](https://zenodo.org/badge/111730061.svg)](https://zenodo.org/badge/latestdoi/111730061)
 
 alpha version.  Use with caution!
