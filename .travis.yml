@@ -7,8 +7,10 @@ python:
 sudo: false
 before_install:
   - pip install netCDF4
+  - pip install coveralls
 install:
   - source activate test-environment
   - "python setup.py install"
 script:
   - "nosetests -vs --with-coverage --cover-package=solar_index"
+after_success: coveralls
