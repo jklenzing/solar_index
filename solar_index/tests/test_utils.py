@@ -15,6 +15,15 @@ import numpy as np
 
 def test_replace_fill_array():
     """Tests the replace_fill function for arrays"""
+    test_vals = [-1.0, 0.0, 3.0]
+    filled_vals = utilities.replace_fill_array(test_vals, fill_value=-1.0)
+
+    assert ((np.all(test_vals[1:] == filled_vals[1:])) &
+            np.isnan(filled_vals[0]))
+
+
+def test_replace_fill_array_numpy():
+    """Tests the replace_fill function for arrays"""
     test_vals = np.array([-1.0, 0.0, 3.0])
     filled_vals = utilities.replace_fill_array(test_vals, fill_value=-1.0)
 
