@@ -19,9 +19,19 @@ class TestOMNI():
         """Runs before every method to create a clean testing setup."""
         self.testOMNI = OMNIvals()
 
+    def teardown(self):
+        """Runs after every method to clean up previous testing."""
+        del self.testOMNI
+
     def test(self):
         assert (True)
 
+    @raises(Exception)
+    def test_omni_load_w_bad_directory(self):
+        """Tests """
+        testOMNI = OMNIvals(file_dir='bad_data')
 
-if __name__ == '__main__':
-    unittest.main()
+    @raises(Exception)
+    def test_omni_load_w_bad_file_name(self):
+        """Tests """
+        testOMNI = OMNIvals(file_name='bad_data.txt')
