@@ -25,10 +25,10 @@ class TestOMNI():
 
     @raises(Exception)
     def test_omni_load_w_bad_directory(self):
-        """Tests """
+        """Tests for non-existent directory"""
         testOMNI = OMNIvals(file_dir='bad_data')
 
     @raises(Exception)
     def test_omni_load_w_bad_file_name(self):
-        """Tests """
+        """Tests for non-existent file"""
         testOMNI = OMNIvals(file_name='bad_data.txt')
