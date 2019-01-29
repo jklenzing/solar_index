@@ -19,9 +19,9 @@ class TestEUV():
         """Runs before every method to create a clean testing setup."""
         self.testEUV = EUVspectra()
 
+    def teardown(self):
+        """Runs after every method to clean up previous testing."""
+        del self.testEUV
+
     def test(self):
         assert (True)
-
-
-if __name__ == '__main__':
-    unittest.main()
