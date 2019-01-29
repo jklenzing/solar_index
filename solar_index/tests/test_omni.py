@@ -15,6 +15,10 @@ import numpy as np
 
 class TestOMNI():
 
+    def setup(self):
+        """Runs before every method to create a clean testing setup."""
+        self.testOMNI = OMNIvals()
+
     def test(self):
         assert (True)
 
