@@ -8,15 +8,27 @@
 
 from __future__ import (print_function)
 from solar_index import EUVspectra
-import unittest
+from nose.tools import assert_raises, raises
+import nose.tools
 import numpy as np
 
 
-class TestEUV(unittest.TestCase):
+class TestEUV():
 
-    def test(self):
-        self.assertTrue(True)
+    def setup(self):
+        """Runs before every method to create a clean testing setup."""
+        self.testEUV = EUVspectra()
 
+    def teardown(self):
+        """Runs after every method to clean up previous testing."""
+        del self.testEUV
 
-if __name__ == '__main__':
-    unittest.main()
+    @raises(Exception)
+    def test_euv_load_w_bad_directory(self):
+        """Tests for non-existent directory"""
+        testEUV = EUVspectra(file_dir='bad_data')
+
+    @raises(Exception)
+    def test_euv_load_w_bad_file_name(self):
+        """Tests for non-existent file"""
+        testEUV = EUVspectra(file_name='bad_data.ncdf')

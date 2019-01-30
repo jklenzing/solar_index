@@ -130,15 +130,15 @@ class EUVspectra(object):
             if kk.lower() == "file_dir":
                 file_dir = kwargs[kk]
             elif kk.lower() == "file_name":
-                self._file_name = kwargs[kk]
+                file_name = kwargs[kk]
 
         # Construct filename and load the data
         if not path.isdir(file_dir):
-            raise Error("unknown file directory {:s}".format(file_dir))
+            raise Exception("unknown file directory {:s}".format(file_dir))
         self.filename = path.join(file_dir, file_name)
 
         if not path.isfile(self.filename):
-            raise Error("unknown file {:s}".format(self.filename))
+            raise Exception("unknown file {:s}".format(self.filename))
 
         try:
             data = Dataset(self.filename, 'r')

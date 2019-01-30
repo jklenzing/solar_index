@@ -54,8 +54,8 @@ class OMNIvals:
 
         try:
             self.load_omni_vals(**kwargs)
-        except:
-            raise Error("unable to initiate OMNIvals class")
+        except error as estr:
+            raise Exception("unable to initiate OMNIvals class - " + estr)
 
     def load_omni_vals(self, **kwargs):
         """ Load an ascii file into the OMNIvals class
@@ -87,15 +87,15 @@ class OMNIvals:
 
         # Construct filename and load the data
         if not path.isdir(file_dir):
-            raise Error("unknown file directory {:s}".format(file_dir))
+            raise IOError("unknown file directory {:s}".format(file_dir))
         self.filename = path.join(file_dir, file_name)
 
         if not path.isfile(self.filename):
-            raise Error("unknown file {:s}".format(self.filename))
+            raise IOError("unknown file {:s}".format(self.filename))
 
         try:
             data = np.loadtxt(self.filename)
-        except:
+        except ImportError:
             estr = "unable to load ascii file {:s}".format(self.filename)
             raise ImportError(estr)
 
