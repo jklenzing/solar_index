@@ -28,7 +28,7 @@ class TestOMNI():
         """Test for non-existent directory"""
         testOMNI = OMNIvals(file_dir='bad_data')
 
-    @raises(FileNotFoundError)
+    @raises(OSError)
     def test_omni_load_w_bad_file_name(self):
         """Test for non-existent file"""
         testOMNI = OMNIvals(file_name='bad_data.txt')

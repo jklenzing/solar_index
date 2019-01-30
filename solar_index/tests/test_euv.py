@@ -28,7 +28,7 @@ class TestEUV():
         """Test for non-existent directory"""
         testEUV = EUVspectra(file_dir='bad_data')
 
-    @raises(FileNotFoundError)
+    @raises(OSError)
     def test_euv_load_w_bad_file_name(self):
         """Test for non-existent file"""
         testEUV = EUVspectra(file_name='bad_data.ncdf')

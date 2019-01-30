@@ -138,12 +138,12 @@ class EUVspectra(object):
         self.filename = path.join(file_dir, file_name)
 
         if not path.isfile(self.filename):
-            raise FileNotFoundError("unknown file {:s}".format(self.filename))
+            raise OSError("unknown file {:s}".format(self.filename))
 
         try:
             data = Dataset(self.filename, 'r')
-        except FileNotFoundError:
-            raise FileNotFoundError("unable to load netCDF4 file")
+        except OSError:
+            raise OSError("unable to load netCDF4 file")
 
         # Assign the time data
         self.year = np.floor(data.variables['DATE'][0, :] / 1000.0).astype(int)
