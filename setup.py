@@ -22,7 +22,7 @@ if version_info.major == 3:
 
 # Run setup
 setup(name='solar_index',
-      version='0.1a2',
+      version='0.2a1',
       url='github.com/jklenzing/solar_index',
       author='Jeff Klenzing',
       author_email='jeffrey.klenzing@nasa.gov',
