@@ -14,7 +14,7 @@ import numpy as np
 
 
 def test_replace_fill_array():
-    """Tests the replace_fill function for arrays"""
+    """Test the replace_fill function for arrays"""
     test_vals = [-1.0, 0.0, 3.0]
     filled_vals = utilities.replace_fill_array(test_vals, fill_value=-1.0)
 
@@ -23,7 +23,7 @@ def test_replace_fill_array():
 
 
 def test_replace_fill_array_numpy():
-    """Tests the replace_fill function for arrays with numpy data"""
+    """Test the replace_fill function for arrays with numpy data"""
     test_vals = np.array([-1.0, 0.0, 3.0])
     filled_vals = utilities.replace_fill_array(test_vals, fill_value=-1.0)
 
@@ -32,7 +32,7 @@ def test_replace_fill_array_numpy():
 
 
 def test_replace_fill_single():
-    """Tests the replace_fill function for arrays"""
+    """Test the replace_fill function for arrays"""
     test_val1 = -1.0
     test_val2 = 2.0
     filled_val1 = utilities.replace_fill_single(test_val1, fill_value=-1.0)

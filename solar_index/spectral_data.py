@@ -99,8 +99,8 @@ class EUVspectra(object):
             # Integrate power for each species
             for ss in self.species:
                 self.integrate_power(species=ss)
-        except FileNotFoundError:
-            raise FileNotFoundError("unable to initiate EUVspectra class")
+        except ImportError:
+            raise ImportError("unable to initiate EUVspectra class")
 
     def load_euv_spectra(self, **kwargs):
         """ Load a netCDF4 file into the EUVspectra class
@@ -134,11 +134,11 @@ class EUVspectra(object):
 
         # Construct filename and load the data
         if not path.isdir(file_dir):
-            raise Exception("unknown file directory {:s}".format(file_dir))
+            raise OSError("unknown file directory {:s}".format(file_dir))
         self.filename = path.join(file_dir, file_name)
 
         if not path.isfile(self.filename):
-            raise Exception("unknown file {:s}".format(self.filename))
+            raise FileNotFoundError("unknown file {:s}".format(self.filename))
 
         try:
             data = Dataset(self.filename, 'r')

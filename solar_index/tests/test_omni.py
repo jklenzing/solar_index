@@ -23,12 +23,12 @@ class TestOMNI():
         """Runs after every method to clean up previous testing."""
         del self.testOMNI
 
-    @raises(Exception)
+    @raises(OSError)
     def test_omni_load_w_bad_directory(self):
-        """Tests for non-existent directory"""
+        """Test for non-existent directory"""
         testOMNI = OMNIvals(file_dir='bad_data')
 
-    @raises(Exception)
+    @raises(FileNotFoundError)
     def test_omni_load_w_bad_file_name(self):
-        """Tests for non-existent file"""
+        """Test for non-existent file"""
         testOMNI = OMNIvals(file_name='bad_data.txt')
