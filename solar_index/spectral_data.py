@@ -143,7 +143,7 @@ class EUVspectra(object):
         try:
             data = Dataset(self.filename, 'r')
         except FileNotFoundError:
-            raise Error("unable to load netCDF4 file")
+            raise FileNotFoundError("unable to load netCDF4 file")
 
         # Assign the time data
         self.year = np.floor(data.variables['DATE'][0, :] / 1000.0).astype(int)
