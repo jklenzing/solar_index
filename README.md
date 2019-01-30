@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.com/jklenzing/solar_index.svg?branch=testing)](https://travis-ci.com/jklenzing/solar_index)
+[![Build Status](https://travis-ci.com/jklenzing/solar_index.svg?branch=develop)](https://travis-ci.com/jklenzing/solar_index)
 [![Documentation Status](https://readthedocs.org/projects/solar-index/badge/?version=latest)](https://solar-index.readthedocs.io/en/latest/?badge=latest)
-[![Coverage Status](https://coveralls.io/repos/github/jklenzing/solar_index/badge.svg?branch=testing)](https://coveralls.io/github/jklenzing/solar_index?branch=testing)
+[![Coverage Status](https://coveralls.io/repos/github/jklenzing/solar_index/badge.svg?branch=develop)](https://coveralls.io/github/jklenzing/solar_index?branch=develop)
 [![DOI](https://zenodo.org/badge/111730061.svg)](https://zenodo.org/badge/latestdoi/111730061)
 
 alpha version.  Use with caution!
