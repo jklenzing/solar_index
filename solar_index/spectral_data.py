@@ -118,7 +118,7 @@ class EUVspectra(object):
         """
         from netCDF4 import Dataset
         from os import path
-        from solar_index.utilities import replace_fill_array
+        from solar_index.utils import replace_fill_array
         from solar_index import _data_dir
 
         # Define default values that may be specified by kwarg

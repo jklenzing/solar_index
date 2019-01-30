@@ -20,7 +20,7 @@ _ROOT = path.abspath(path.dirname(__file__))
 _data_dir = path.join(_ROOT, "data")
 
 try:
-    from solar_index import (spectral_data, omni_data, utilities)
+    from solar_index import (spectral_data, omni_data, utils)
     from solar_index.spectral_data import EUVspectra
     from solar_index.omni_data import OMNIvals
 except ImportError as err:

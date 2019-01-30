@@ -73,7 +73,7 @@ class OMNIvals:
         """
 
         from os import path
-        from solar_index import utilities, _data_dir
+        from solar_index import utils, _data_dir
 
         # Define the default data file and update using kwargs
         file_dir = _data_dir
@@ -106,5 +106,5 @@ class OMNIvals:
                             for i in range(len(self.day))])
 
         self.Rz = data[:, 3]
-        self.F107 = utilities.replace_fill_array(data[:, 4], fill_value=999.9)
+        self.F107 = utils.replace_fill_array(data[:, 4], fill_value=999.9)
         self.Lalpha = data[:, 5]
