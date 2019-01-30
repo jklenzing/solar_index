@@ -99,8 +99,8 @@ class EUVspectra(object):
             # Integrate power for each species
             for ss in self.species:
                 self.integrate_power(species=ss)
-        except FileNotFoundError:
-            raise FileNotFoundError("unable to initiate EUVspectra class")
+        except ImportError:
+            raise ImportError("unable to initiate EUVspectra class")
 
     def load_euv_spectra(self, **kwargs):
         """ Load a netCDF4 file into the EUVspectra class
@@ -118,7 +118,7 @@ class EUVspectra(object):
         """
         from netCDF4 import Dataset
         from os import path
-        from solar_index.utilities import replace_fill_array
+        from solar_index.utils import replace_fill_array
         from solar_index import _data_dir
 
         # Define default values that may be specified by kwarg
@@ -130,20 +130,20 @@ class EUVspectra(object):
             if kk.lower() == "file_dir":
                 file_dir = kwargs[kk]
             elif kk.lower() == "file_name":
-                self._file_name = kwargs[kk]
+                file_name = kwargs[kk]
 
         # Construct filename and load the data
         if not path.isdir(file_dir):
-            raise Error("unknown file directory {:s}".format(file_dir))
+            raise OSError("unknown file directory {:s}".format(file_dir))
         self.filename = path.join(file_dir, file_name)
 
         if not path.isfile(self.filename):
-            raise Error("unknown file {:s}".format(self.filename))
+            raise OSError("unknown file {:s}".format(self.filename))
 
         try:
             data = Dataset(self.filename, 'r')
-        except FileNotFoundError:
-            raise Error("unable to load netCDF4 file")
+        except OSError:
+            raise OSError("unable to load netCDF4 file")
 
         # Assign the time data
         self.year = np.floor(data.variables['DATE'][0, :] / 1000.0).astype(int)

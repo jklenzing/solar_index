@@ -38,11 +38,7 @@ def replace_fill_array(data, fill_value=-1.0, replace_value=np.nan):
     """
     # Allow for array-like input
     if not isinstance(data, np.ndarray):
-        try:
-            data = np.array(data)
-        except TypeError:
-            raise Error("input data must be a numpy array")
-            return data
+        data = np.array(data)
 
     data[data == fill_value] = replace_value
 
