@@ -14,7 +14,7 @@ SolarIndex    Solar Index data
 """
 from os import path
 
-__version__ = str('0.1-alpha')
+__version__ = str('0.2-alpha')
 
 _ROOT = path.abspath(path.dirname(__file__))
 _data_dir = path.join(_ROOT, "data")
