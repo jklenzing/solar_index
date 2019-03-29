@@ -1,10 +1,12 @@
 language: python
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
+  - 2.7
+  - 3.5
+  - 3.6
+  - 3.7
 sudo: false
+dist: xenial
+
 before_install:
   - pip install netCDF4
   - pip install coveralls
