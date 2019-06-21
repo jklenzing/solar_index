@@ -14,7 +14,7 @@ F = solar_index.OMNIvals()
 plt.plot(S.bins[0, :], S.area['o'])
 plt.xlabel('Wavelength [nm]')
 plt.ylabel('Photoabsorption Cross-section [m$^2$]')
-plt.savefig('SW2019graphs/figure1.png')
+plt.savefig('graphs/figure1.png')
 plt.close()
 
 # Normalization of datasets
@@ -55,7 +55,7 @@ axarr[0].plot(df['F107'], label='F10.7', color='k')
 axarr[0].plot(df['Opow_nrm']*df['F107_std']+df['F107_mean'], label='O power',
               color='r')
 axarr[0].legend()
-plt.savefig('SW2019graphs/figure2.png')
+plt.savefig('graphs/figure2.png')
 plt.close()
 
 # Figure 3
@@ -73,7 +73,7 @@ axarr[1].plot(df['F107_nrm'][values], df['Opow_nrm'][values], '.k')
 axarr[1].set_xlabel('F10.7 (normalized)')
 axarr[1].set_ylabel('O power (normalized)')
 
-plt.savefig('SW2019graphs/figure3.png')
+plt.savefig('graphs/figure3.png')
 plt.close()
 
 # Correlation coefficients of datasets
@@ -84,11 +84,11 @@ rm, pm = scipy.stats.pearsonr(df['F107_mean'][ind], df['Opow_mean'][ind])
 rn, pn = scipy.stats.pearsonr(df['F107_nrm'][ind], df['Opow_nrm'][ind])
 
 sns.jointplot('F107', 'Opow', data=df, kind="reg", size=7)
-plt.savefig('SW2019graphs/figure4.png')
+plt.savefig('graphs/figure4.png')
 plt.close()
 
 sns.jointplot('F107_nrm', 'Opow_nrm', data=df, kind="reg", size=7)
-plt.savefig('SW2019graphs/figure5.png')
+plt.savefig('graphs/figure5.png')
 plt.close()
 
 print('Correlation of raw values = %5.3f' % r)
