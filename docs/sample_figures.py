@@ -63,6 +63,14 @@ lower_limit = 0.05
 values = (df['F107_std']/df['F107_mean']>lower_limit) & \
          (df['Opow_std']/df['Opow_mean']>lower_limit)
 
+#### Correlation coefficients of datasets
+
+
+r,p = scipy.stats.pearsonr(df['F107'][values],df['Opow'][values])
+ind = (~np.isnan(df['F107_nrm'])) & values
+rm,pm = scipy.stats.pearsonr(df['F107_mean'][ind],df['Opow_mean'][ind])
+rn,pn = scipy.stats.pearsonr(df['F107_nrm'][ind],df['Opow_nrm'][ind])
+
 f, axarr = plt.subplots(1,2)
 axarr[0].plot(df['F107'][values],df['Opow'][values],'.k')
 axarr[0].set_xlabel('F10.7 (sfu)')
@@ -75,19 +83,11 @@ axarr[1].set_ylabel('O power (normalized)')
 plt.savefig('SW2018graphs/figure3.png')
 plt.close()
 
-#### Correlation coefficients of datasets
-
-
-r,p = scipy.stats.pearsonr(df['F107'][values],df['Opow'][values])
-ind = (~np.isnan(df['F107_nrm'])) & values
-rm,pm = scipy.stats.pearsonr(df['F107_mean'][ind],df['Opow_mean'][ind])
-rn,pn = scipy.stats.pearsonr(df['F107_nrm'][ind],df['Opow_nrm'][ind])
-
-sns.jointplot('F107','Opow',data=df, kind="reg", size=7)
+sns.jointplot('F107','Opow',data=df[values], kind="reg", size=7)
 plt.savefig('SW2018graphs/figure4.png')
 plt.close()
 
-sns.jointplot('F107_nrm','Opow_nrm',data=df, kind="reg", size=7)
+sns.jointplot('F107_nrm','Opow_nrm',data=df[values], kind="reg", size=7)
 plt.savefig('SW2018graphs/figure5.png')
 plt.close()
 
