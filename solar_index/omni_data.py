@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2018, JK & AGB
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """ Tools for loading solar indices.
 
 Classes
@@ -19,7 +19,7 @@ References
 
 import datetime as dt
 import numpy as np
-import logbook as logging
+
 
 class OMNIvals:
     """ Object containing OMNI solar indices
@@ -54,8 +54,8 @@ class OMNIvals:
 
         try:
             self.load_omni_vals(**kwargs)
-        except:
-            logging.error("unable to initiate OMNIvals class")
+        except ImportError:
+            raise ImportError("unable to initiate OMNIvals class - ")
 
     def load_omni_vals(self, **kwargs):
         """ Load an ascii file into the OMNIvals class
@@ -73,7 +73,7 @@ class OMNIvals:
         """
 
         from os import path
-        from solar_index import utilities, _data_dir
+        from solar_index import utils, _data_dir
 
         # Define the default data file and update using kwargs
         file_dir = _data_dir
@@ -86,25 +86,25 @@ class OMNIvals:
                 file_name = kwargs[kk]
 
         # Construct filename and load the data
-        assert path.isdir(file_dir), \
-            logging.error("unknown file directory {:s}".format(file_dir))
+        if not path.isdir(file_dir):
+            raise OSError("unknown file directory {:s}".format(file_dir))
         self.filename = path.join(file_dir, file_name)
 
-        assert path.isfile(self.filename), \
-            logging.error("unknown file {:s}".format(self.filename))
+        if not path.isfile(self.filename):
+            raise OSError("unknown file {:s}".format(self.filename))
 
         try:
             data = np.loadtxt(self.filename)
-        except:
+        except ImportError:
             estr = "unable to load ascii file {:s}".format(self.filename)
-            logging.error(estr)
+            raise ImportError(estr)
 
-        self.year = data[:,0]
-        self.day = data[:,1]
-        self.dt = np.array([dt.datetime(int(self.year[i]),1,1) +
+        self.year = data[:, 0]
+        self.day = data[:, 1]
+        self.dt = np.array([dt.datetime(int(self.year[i]), 1, 1) +
                             dt.timedelta(days=int(self.day[i])-1)
                             for i in range(len(self.day))])
 
-        self.Rz     = data[:,3]
-        self.F107   = utilities.replace_fill_array(data[:,4],fill_value=999.9)
-        self.Lalpha = data[:,5]
+        self.Rz = data[:, 3]
+        self.F107 = utils.replace_fill_array(data[:, 4], fill_value=999.9)
+        self.Lalpha = data[:, 5]

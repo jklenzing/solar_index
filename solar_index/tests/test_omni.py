@@ -2,19 +2,33 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2017, JK & AGB
 # Full license can be found in License.md
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 """ Tests the OMNIvals class and functions
 """
 
 from __future__ import (print_function)
 from solar_index import OMNIvals
-import unittest
+from nose.tools import assert_raises, raises
+import nose.tools
 import numpy as np
 
-class TestOMNI(unittest.TestCase):
 
-    def test(self):
-        self.assertTrue(True)
+class TestOMNI():
 
-if __name__ == '__main__':
-    unittest.main()
+    def setup(self):
+        """Runs before every method to create a clean testing setup."""
+        self.testOMNI = OMNIvals()
+
+    def teardown(self):
+        """Runs after every method to clean up previous testing."""
+        del self.testOMNI
+
+    @raises(OSError)
+    def test_omni_load_w_bad_directory(self):
+        """Test for non-existent directory"""
+        testOMNI = OMNIvals(file_dir='bad_data')
+
+    @raises(OSError)
+    def test_omni_load_w_bad_file_name(self):
+        """Test for non-existent file"""
+        testOMNI = OMNIvals(file_name='bad_data.txt')
