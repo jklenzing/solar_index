@@ -44,7 +44,8 @@ setup(name='solar_index',
       ],
       install_requires=[
           'numpy',
-          'datetime'
+          'datetime',
+          'pysat'
       ],
       include_package_data=True,
       zip_safe=False,

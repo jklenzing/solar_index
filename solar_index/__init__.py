@@ -18,6 +18,7 @@ _ROOT = path.abspath(path.dirname(__file__))
 _data_dir = path.join(_ROOT, "data")
 
 try:
+    from solar_index._core_class import SolarIndex  # noqa: F401
     from solar_index._spectral_data import EUVspectra  # noqa: F401
     from solar_index._omni_data import OMNIvals  # noqa: F401
 except ImportError as err:
