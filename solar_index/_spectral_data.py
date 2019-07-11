@@ -177,7 +177,7 @@ class EUVspectra(object):
             a timeseries.
         """
         if species not in self.species:
-            raise Error("unknown species")
+            raise ValueError("unknown species")
 
         self.load_coeff(species=species)
 
@@ -219,7 +219,7 @@ class EUVspectra(object):
                 String denoting coefficients to load (eg, 'o', 'o2', 'n2')
         """
         if species not in self.species:
-            raise Error("unknown species")
+            raise ValueError("unknown species")
 
         # Currently using lowest of split bins, units of square meters
         if species == 'all':
