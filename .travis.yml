@@ -12,8 +12,9 @@ addons:
   apt:
     packages:
     - gfortran
-    
+
 before_install:
+  - pip install matplotlib
   - pip install netCDF4
   - pip install coveralls
   - pip install pytest-cov
