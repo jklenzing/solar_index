@@ -11,6 +11,7 @@ matrix:
 before_install:
   - pip install netCDF4
   - pip install coveralls
+  - pip install pytest-cov
 install:
   - source activate test-environment
   - python setup.py install
