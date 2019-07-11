@@ -8,6 +8,11 @@ matrix:
       dist: xenial
       sudo: true
 
+addons:
+  apt:
+    packages:
+    - gfortran
+    
 before_install:
   - pip install netCDF4
   - pip install coveralls
