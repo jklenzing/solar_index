@@ -8,8 +8,6 @@
 
 from __future__ import (print_function)
 from solar_index import utils
-from nose.tools import assert_raises, raises
-import nose.tools
 import numpy as np
 
 
