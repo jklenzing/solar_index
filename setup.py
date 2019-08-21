@@ -21,32 +21,4 @@ if version_info.major == 3:
     read_kwargs = {"encoding": "utf8"}
 
 # Run setup
-setup(name='solar_index',
-      version='0.2.0',
-      url='github.com/jklenzing/solar_index',
-      author='Jeff Klenzing',
-      author_email='jeffrey.klenzing@nasa.gov',
-      description='Prepares solar irradiance index based on TIMED/SEE data',
-      long_description=read('README.md', read_kwargs),
-      packages=find_packages(),
-      classifiers=[
-          "Development Status :: 3 - Alpha",
-          "Topic :: Scientific/Engineering :: Physics",
-          "Intended Audience :: Science/Research",
-          "License :: BSD",
-          "Natural Language :: English",
-          "Programming Language :: Python :: 2.7",
-          "Programming Language :: Python :: 3.4",
-          "Programming Language :: Python :: 3.5",
-          "Programming Language :: Python :: 3.6",
-          "Operating System :: MacOS :: MacOS X",
-          "Operating System :: POSIX",
-      ],
-      install_requires=[
-          'numpy',
-          'datetime',
-          'pysat'
-      ],
-      include_package_data=True,
-      zip_safe=False,
-      )
+setup()
