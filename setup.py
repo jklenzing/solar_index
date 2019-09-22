@@ -6,7 +6,7 @@
 
 from __future__ import absolute_import
 from os import path
-from setuptools import setup, find_packages
+from setuptools import setup
 from sys import version_info
 
 
